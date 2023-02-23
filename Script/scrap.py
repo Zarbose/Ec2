@@ -55,7 +55,7 @@ req.getPage()
 class DataManager:
     def __init__(self):
         self.org="Ec2"
-        self.token="79yVmTjFqqYQj5bXDRmNYJfqghYsqqom73zvgXStjkw1WK7QgGr-7rAiHNEkORlBTQvV9nwL7mcB5IQTFKYbUw=="
+        self.token="sdCawSGLxeLRVbaNsjdIMHspt7jdqvB6sVmRTzikxPeb9MxW_zDLoK7fk5qi4iWee2td9OSkp55RGeG6fARhFw=="
         self.url="http://localhost:8086"
 
 
