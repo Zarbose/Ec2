@@ -2,8 +2,16 @@ import requests
 import subprocess
 from bs4 import BeautifulSoup
 from datetime import datetime
-from influxdb_client import Point, InfluxDBClient
+import influxdb_client
 from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client.domain.write_precision import WritePrecision
+from influxdb_client import InfluxDBClient, Point, WriteOptions
+from influxdb_client import InfluxDBClient, WriteOptions
+import pandas as pd
+
+from prometheus_client import start_http_server, Summary
+import random
+import time
 
 
 # pip install beautifulsoup4
@@ -48,12 +56,13 @@ class HtmlRequest:
             print(self.result[i][0],self.result[i][1])
 
 
-req = HtmlRequest(url,date)
-req.getPage()
+# req = HtmlRequest(url,date)
+# req.getPage()
 # req.printResult()
 
 class DataManager:
     def __init__(self):
+        self.bucket="Test"
         self.org="Ec2"
         self.token="sdCawSGLxeLRVbaNsjdIMHspt7jdqvB6sVmRTzikxPeb9MxW_zDLoK7fk5qi4iWee2td9OSkp55RGeG6fARhFw=="
         self.url="http://localhost:8086"
@@ -62,10 +71,51 @@ class DataManager:
     def dataToCSV(self):
         print("TODO")
 
-    def sendData(self,bucket):
-        exitCode = subprocess.call(["influx","write","-b","Test","-f","test_influxdb.csv"])
+    def sendData(self):
+        # print("Send data")
 
-    def getData(self,bucket):
+        # with InfluxDBClient(url=self.url, token=self.token, org=self.org, debug=True) as _client:
+        #     with _client.write_api(write_options=SYNCHRONOUS) as _write_client:
+        #         p = Point("h2o_feet").tag("location", "coyote_creek").field("water_level", 4.0).time(1674658800,WritePrecision.S)
+        #         _write_client.write(self.bucket, self.org, record=p)
+        #         print("Sending : ",p.to_line_protocol())
+    
+        
+
+        # exitCode = subprocess.call(["influx","write","-b","Test","-f","test_influxdb.csv"])
+
+
+        # client = influxdb_client.InfluxDBClient(
+        #     url=self.url,
+        #     token=self.token,
+        #     org=self.org,
+        #     debug=True
+        # )
+        # write_api = client.write_api(write_options=SYNCHRONOUS)
+        # p = influxdb_client.Point("h2o_feet").tag("location", "coyote_creek").field("water_level", 4.0).time(1674658800,WritePrecision.S)
+        # write_api.write(bucket=self.bucket, org=self.org, record=p,write_precision=WritePrecision.S)
+        # print("Sending : ",p.to_line_protocol())
+        # write_api.close()
+        # client.close()
+
+        with InfluxDBClient(url=self.url, token=self.token, org=self.org) as client:
+            for df in pd.read_csv("test2.csv", chunksize=1_000):
+                with client.write_api() as write_api:
+                    # try:
+                    print(df)
+                    write_api.write(
+                        bucket="Test",
+                        org="Ec2",
+                        record=df,
+                        data_frame_measurement_name="stocks",
+                        data_frame_tag_columns=["symbol"],
+                        # data_frame_timestamp_column="timestamp",
+                    )
+                    # except InfluxDBClientError as e:
+                    #     print("Ici", e)
+        
+
+    def getData(self):
         print("TODO")
 
     def genBucket(self):
@@ -81,6 +131,10 @@ class CSVWriter:
     def writeData(self):
         print("TODO")
 
+
+
+# dm = DataManager()
+# dm.sendData()
 
 #79yVmTjFqqYQj5bXDRmNYJfqghYsqqom73zvgXStjkw1WK7QgGr-7rAiHNEkORlBTQvV9nwL7mcB5IQTFKYbUw==
 

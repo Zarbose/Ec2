@@ -13,6 +13,8 @@ services:
       - django
     depends_on:
       - influxdb
+    volumes:
+      - "./Script:/home/data"
 
   influxdb:
     build:
