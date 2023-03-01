@@ -1,4 +1,0 @@
-pip install --upgrade pip
-python3 -m pip install Django
-django-admin startproject mysite
-python3 manage.py runserver

@@ -8,7 +8,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 # pip install beautifulsoup4
 # pip install influxdb-client
-date = '21.02.2023'
+date = '01.03.2023'
 url = 'https://transparency.entsoe.eu/transmission-domain/r2/dayAheadPrices/show?name=&defaultValue=false&viewType=TABLE&areaType=BZN&atch=false&dateTime.dateTime='+date+'+00:00|CET|DAY&biddingZone.values=CTY|10YFR-RTE------C!BZN|10YFR-RTE------C&resolution.values=PT60M&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)'
 
 
@@ -48,8 +48,8 @@ class HtmlRequest:
             print(self.result[i][0],self.result[i][1])
 
 
-req = HtmlRequest(url,date)
-req.getPage()
+# req = HtmlRequest(url,date)
+# req.getPage()
 # req.printResult()
 
 class DataManager:
@@ -62,8 +62,8 @@ class DataManager:
     def dataToCSV(self):
         print("TODO")
 
-    def sendData(self,bucket):
-        exitCode = subprocess.call(["influx","write","-b","Test","-f","test_influxdb.csv"])
+    def sendData(self):
+        exitCode = subprocess.call(["influx","write","-b","daily-price","-f","daily_data.csv","-t",self.token])
 
     def getData(self,bucket):
         print("TODO")
@@ -81,6 +81,9 @@ class CSVWriter:
     def writeData(self):
         print("TODO")
 
+
+dm = DataManager()
+dm.sendData()
 
 #79yVmTjFqqYQj5bXDRmNYJfqghYsqqom73zvgXStjkw1WK7QgGr-7rAiHNEkORlBTQvV9nwL7mcB5IQTFKYbUw==
 

@@ -1,16 +1,16 @@
 version: "3.8"
 services:
-  django:
+  python:
     build:
       context: ./
-      dockerfile: django.Dockerfile
-    image: ec2-django
-    container_name: django
+      dockerfile: python.Dockerfile
+    image: ec2-python
+    container_name: python
     ports:
       - "8000:8000"
     networks:
       - influxdb
-      - django
+      - python
     depends_on:
       - influxdb
 
@@ -24,13 +24,13 @@ services:
       - "8086:8086"
     networks:
       - influxdb
-      - django
+      - python
       - grafana
-    volumes:
-      - "db-data:/var/lib/influxdb2"
+    # volumes:
+    #   - "influx-data:/var/lib/influxdb2"
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana-oss
     container_name: grafana
     ports:
       - "3000:3000"
@@ -38,12 +38,15 @@ services:
       - grafana
     depends_on:
       - influxdb
+    # volumes:
+    #   - "grafana-data:/var/lib/grafana"
 
 
 networks:
-  django:
+  python:
   influxdb:
   grafana:
 
 volumes:
-  db-data:
+  influx-data:
+  grafana-data:
