@@ -2,7 +2,7 @@ import requests
 import subprocess
 from bs4 import BeautifulSoup
 from datetime import datetime
-from influxdb_client import Point, InfluxDBClient
+from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 
@@ -57,13 +57,23 @@ class DataManager:
         self.org="Ec2"
         self.token="sdCawSGLxeLRVbaNsjdIMHspt7jdqvB6sVmRTzikxPeb9MxW_zDLoK7fk5qi4iWee2td9OSkp55RGeG6fARhFw=="
         self.url="http://localhost:8086"
+        self.bucket="daily-price"
 
 
     def dataToCSV(self):
         print("TODO")
 
     def sendData(self):
-        exitCode = subprocess.call(["influx","write","-b","daily-price","-f","daily_data.csv","-t",self.token])
+        # exitCode = subprocess.call(["influx","write","-b","daily-price","-f","daily_data.csv","-t",self.token])
+        client = InfluxDBClient(url="http://localhost:8086", token=self.token, org=self.org)
+        write_api = client.write_api(write_options=SYNCHRONOUS)
+        for i in range(24):
+            if i<10:
+                time="2023-03-02T0"+str(i)+":00:00Z"
+            else:
+                time="2023-03-02T"+str(i)+":00:00Z"
+            point = Point("my_measurement").tag("my_tag", "my_value").field("my_field", i).time(time, WritePrecision.NS)
+            write_api.write(bucket=self.bucket, record=point)
 
     def getData(self,bucket):
         print("TODO")
