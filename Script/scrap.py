@@ -16,27 +16,24 @@ class DataManager:
         self.data=data
 
     def sendData(self):
-        print("Ici")
         client = InfluxDBClient(url=self.url, token=self.token, org=self.org)
         write_api = client.write_api(write_options=SYNCHRONOUS)
         for i in range(len(self.data)):
+            print(i,self.data[i][0],float(self.data[i][1]))
             point = Point("cout-electricite").tag("location", "France").field("euros", float(self.data[i][1])).time(self.data[i][0], WritePrecision.NS)
             write_api.write(bucket=self.bucket, record=point)
 
     def getData(self):
         client = InfluxDBClient(url=self.url, token=self.token, org=self.org)
         query_api = client.query_api()
-        query = 'from(bucket:"daily-price")\
-        |> range(start: today())\
+
+        query = 'import "date"\
+        from(bucket:"daily-price")\
+        |> range(start: today(), stop: date.add(d: 24h, to: today()))\
         |> filter(fn:(r) => r._measurement == "cout-electricite")\
         |> filter(fn:(r) => r.location == "France")\
         |> filter(fn:(r) => r._field == "euros")'
-        # query = 'from(bucket: "daily-price")\
-        # |> range(start: today())\
-        # |> filter(fn: (r) => r["_measurement"] == "cout-electricite")\
-        # |> filter(fn: (r) => r["location"] == "France")\
-        # |> filter(fn: (r) => r["_field"] == "euros")\
-        # |> yield(name: "mean")'
+
         result = query_api.query(org=self.org, query=query)
         results = []
         for table in result:
@@ -87,7 +84,7 @@ class HtmlRequest:
 
         return to_print
 
-req = HtmlRequest(url)
+# req = HtmlRequest(url)
 # req.getPage()
 # print(req)
 
