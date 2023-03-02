@@ -16,15 +16,36 @@ class DataManager:
         self.data=data
 
     def sendData(self):
-        client = InfluxDBClient(url="http://localhost:8086", token=self.token, org=self.org)
+        print("Ici")
+        client = InfluxDBClient(url=self.url, token=self.token, org=self.org)
         write_api = client.write_api(write_options=SYNCHRONOUS)
         for i in range(len(self.data)):
-            # print(type(self.data[i][0]),type(float(self.data[i][1])))
             point = Point("cout-electricite").tag("location", "France").field("euros", float(self.data[i][1])).time(self.data[i][0], WritePrecision.NS)
             write_api.write(bucket=self.bucket, record=point)
 
     def getData(self):
-        print("TODO")
+        client = InfluxDBClient(url=self.url, token=self.token, org=self.org)
+        query_api = client.query_api()
+        query = 'from(bucket:"daily-price")\
+        |> range(start: today())\
+        |> filter(fn:(r) => r._measurement == "cout-electricite")\
+        |> filter(fn:(r) => r.location == "France")\
+        |> filter(fn:(r) => r._field == "euros")'
+        # query = 'from(bucket: "daily-price")\
+        # |> range(start: today())\
+        # |> filter(fn: (r) => r["_measurement"] == "cout-electricite")\
+        # |> filter(fn: (r) => r["location"] == "France")\
+        # |> filter(fn: (r) => r["_field"] == "euros")\
+        # |> yield(name: "mean")'
+        result = query_api.query(org=self.org, query=query)
+        results = []
+        for table in result:
+            for record in table.records:
+                print(record.get_value())
+                results.append((record.get_field(), record.get_value()))
+
+        # print(results)
+
 
 class HtmlRequest:
     def __init__(self,url):
@@ -35,7 +56,7 @@ class HtmlRequest:
     def getPage(self):
         response = requests.get(self.url)
         if response.status_code != 200:
-            print("Error fetching page code "+str(response.status_code))
+            print("Error fetching page error : "+str(response.status_code))
             exit(1)
 
         soup = BeautifulSoup(response.content, 'html.parser')
@@ -67,7 +88,10 @@ class HtmlRequest:
         return to_print
 
 req = HtmlRequest(url)
-req.getPage()
+# req.getPage()
 # print(req)
+
+dm = DataManager(None)
+dm.getData()
 
 #79yVmTjFqqYQj5bXDRmNYJfqghYsqqom73zvgXStjkw1WK7QgGr-7rAiHNEkORlBTQvV9nwL7mcB5IQTFKYbUw==
