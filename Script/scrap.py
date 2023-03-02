@@ -1,25 +1,11 @@
 import requests
 import subprocess
+import csv
 from bs4 import BeautifulSoup
 from datetime import datetime
-import influxdb_client
-from influxdb_client.client.write_api import SYNCHRONOUS
-from influxdb_client.domain.write_precision import WritePrecision
-from influxdb_client import InfluxDBClient, Point, WriteOptions
-from influxdb_client import InfluxDBClient, WriteOptions
-import pandas as pd
 
-from prometheus_client import start_http_server, Summary
-import random
-import time
-
-
-# pip install beautifulsoup4
-# pip install influxdb-client
-date = '21.02.2023'
+date = datetime.today().strftime('%d.%m.%Y')
 url = 'https://transparency.entsoe.eu/transmission-domain/r2/dayAheadPrices/show?name=&defaultValue=false&viewType=TABLE&areaType=BZN&atch=false&dateTime.dateTime='+date+'+00:00|CET|DAY&biddingZone.values=CTY|10YFR-RTE------C!BZN|10YFR-RTE------C&resolution.values=PT60M&dateTime.timezone=CET_CEST&dateTime.timezone_input=CET+(UTC+1)+/+CEST+(UTC+2)'
-
-
 class HtmlRequest:
     def __init__(self,url,date):
         self.date = date
@@ -47,73 +33,38 @@ class HtmlRequest:
         for i in range(0,N):
             string = self.date+" "+str(i)+":0:0"
             string = datetime.strptime(string, '%d.%m.%Y %H:%M:%S').isoformat()
-            datetime_object = datetime.strptime(string, '%Y-%m-%dT%H:%M:%S')
-            ts=datetime.timestamp(datetime_object)
-            self.result[i][0]=str(datetime_object)+".000000Z"
+            datetime_object = datetime.strptime(string, '%Y-%m-%dT%H:%M:%S%f')
+            self.result[i][0]=(str(datetime_object)+".000000000Z").replace(" ","T")
 
-    def printResult(self):
+    def __repr__(self):
+        return "{0}".format(self.result)
+
+    def __str__(self):
+        to_print=""
         for i in range(len(self.result)):
-            print(self.result[i][0],self.result[i][1])
+            to_print+=str(self.result[i][0])+" "+str(self.result[i][1])+"\n"
+
+        return to_print
 
 
 # req = HtmlRequest(url,date)
 # req.getPage()
-# req.printResult()
+# print(req)
 
 class DataManager:
     def __init__(self):
         self.bucket="Test"
         self.org="Ec2"
         self.token="sdCawSGLxeLRVbaNsjdIMHspt7jdqvB6sVmRTzikxPeb9MxW_zDLoK7fk5qi4iWee2td9OSkp55RGeG6fARhFw=="
-        self.url="http://localhost:8086"
+        self.url_local="http://localhost:8086"
+        self.url_distant="http://localhost:8086"
 
 
     def dataToCSV(self):
         print("TODO")
 
     def sendData(self):
-        # print("Send data")
-
-        # with InfluxDBClient(url=self.url, token=self.token, org=self.org, debug=True) as _client:
-        #     with _client.write_api(write_options=SYNCHRONOUS) as _write_client:
-        #         p = Point("h2o_feet").tag("location", "coyote_creek").field("water_level", 4.0).time(1674658800,WritePrecision.S)
-        #         _write_client.write(self.bucket, self.org, record=p)
-        #         print("Sending : ",p.to_line_protocol())
-    
-        
-
-        # exitCode = subprocess.call(["influx","write","-b","Test","-f","test_influxdb.csv"])
-
-
-        # client = influxdb_client.InfluxDBClient(
-        #     url=self.url,
-        #     token=self.token,
-        #     org=self.org,
-        #     debug=True
-        # )
-        # write_api = client.write_api(write_options=SYNCHRONOUS)
-        # p = influxdb_client.Point("h2o_feet").tag("location", "coyote_creek").field("water_level", 4.0).time(1674658800,WritePrecision.S)
-        # write_api.write(bucket=self.bucket, org=self.org, record=p,write_precision=WritePrecision.S)
-        # print("Sending : ",p.to_line_protocol())
-        # write_api.close()
-        # client.close()
-
-        with InfluxDBClient(url=self.url, token=self.token, org=self.org) as client:
-            for df in pd.read_csv("test2.csv", chunksize=1_000):
-                with client.write_api() as write_api:
-                    # try:
-                    print(df)
-                    write_api.write(
-                        bucket="Test",
-                        org="Ec2",
-                        record=df,
-                        data_frame_measurement_name="stocks",
-                        data_frame_tag_columns=["symbol"],
-                        # data_frame_timestamp_column="timestamp",
-                    )
-                    # except InfluxDBClientError as e:
-                    #     print("Ici", e)
-        
+        exitCode = subprocess.call(["influx","write","--host",self.url_distant,"-o",self.org,"-b",self.bucket,"-t",self.token,"-f","test_influxdb.csv"])
 
     def getData(self):
         print("TODO")
@@ -129,28 +80,10 @@ class CSVWriter:
         print("TODO")
 
     def writeData(self):
-        print("TODO")
+        with open(self.path, 'a+',newline='') as csvfile:
+            writer = csv.writer(csvfile,delimiter=',')
+            data=['','','0','2023-02-20T13:27:05.046873851Z','2023-02-21T13:27:05.046873851Z','2023-02-21T03:00:00.046873851Z','138.52','euros','cout_electricite','France']
+            writer.writerow(data)
 
-
-
-# dm = DataManager()
-# dm.sendData()
-
-#79yVmTjFqqYQj5bXDRmNYJfqghYsqqom73zvgXStjkw1WK7QgGr-7rAiHNEkORlBTQvV9nwL7mcB5IQTFKYbUw==
-
-
-# exitCode = subprocess.call(["influx","write","-b","Test","-f","test_influxdb.csv"])
-
-# write_api = client.write_api(write_options=SYNCHRONOUS) 
-
-# point = Point("h2o_feet") \
-#     .field("water_level", 10) \
-#     .tag("location", "pacific") \
-
-# print(f'Time serialized with nanosecond precision: {point.to_line_protocol()}')
-# print()
-# write_api.write(bucket="Test", record=point.to_line_protocol())
-
-# p = influxdb_client.Point("my_measurement").tag("location", "Prague").field("temperature", 107.93)
-# write_api.write(bucket=bucket, org=org, record=p)
-
+csw = CSVWriter('mod.csv')
+csw.writeData()

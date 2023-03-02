@@ -1,0 +1,1 @@
+influx write --host http://influxdb:8086 -o Ec2 -b Test -t "sdCawSGLxeLRVbaNsjdIMHspt7jdqvB6sVmRTzikxPeb9MxW_zDLoK7fk5qi4iWee2td9OSkp55RGeG6fARhFw==" -f "test_influxdb.csv"
