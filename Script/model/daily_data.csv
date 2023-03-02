@@ -1,0 +1,4 @@
+#group,false,false,true,true,true,false,true,true,true
+#datatype,string,long,dateTime:RFC3339,dateTime:RFC3339,dateTime:RFC3339,double,string,string,string
+#default,mean,,,,,,,,
+,result,table,_start,_stop,_time,_value,_field,_measurement,location

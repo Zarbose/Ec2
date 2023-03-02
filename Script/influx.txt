@@ -1,0 +1,5 @@
+from(bucket:"daily-price")
+|> range(start: today())
+|> filter(fn:(r) => r._measurement == "cout")
+|> filter(fn:(r) => r.location == "France")
+|> filter(fn:(r) => r._field == "euros")
