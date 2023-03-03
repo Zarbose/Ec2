@@ -19,7 +19,6 @@ class DataManager:
         client = InfluxDBClient(url=self.url, token=self.token, org=self.org)
         write_api = client.write_api(write_options=SYNCHRONOUS)
         for i in range(len(self.data)):
-            print(i,self.data[i][0],float(self.data[i][1]))
             point = Point("cout-electricite").tag("location", "France").field("euros", float(self.data[i][1])).time(self.data[i][0], WritePrecision.NS)
             write_api.write(bucket=self.bucket, record=point)
 
@@ -30,9 +29,9 @@ class DataManager:
         query = 'import "date"\
         from(bucket:"daily-price")\
         |> range(start: today(), stop: date.add(d: 24h, to: today()))\
-        |> filter(fn:(r) => r._measurement == "cout-electricite")\
-        |> filter(fn:(r) => r.location == "France")\
-        |> filter(fn:(r) => r._field == "euros")'
+        |> filter(fn:(r) => r["_measurement"] == "cout-electricite")\
+        |> filter(fn:(r) => r["location"] == "France")\
+        |> filter(fn:(r) => r["_field"] == "euros")'
 
         result = query_api.query(org=self.org, query=query)
         results = []
@@ -40,8 +39,6 @@ class DataManager:
             for record in table.records:
                 print(record.get_value())
                 results.append((record.get_field(), record.get_value()))
-
-        # print(results)
 
 
 class HtmlRequest:
@@ -84,11 +81,11 @@ class HtmlRequest:
 
         return to_print
 
-# req = HtmlRequest(url)
-# req.getPage()
+req = HtmlRequest(url)
+req.getPage()
 # print(req)
 
-dm = DataManager(None)
-dm.getData()
+# dm = DataManager(None)
+# dm.getData()
 
 #79yVmTjFqqYQj5bXDRmNYJfqghYsqqom73zvgXStjkw1WK7QgGr-7rAiHNEkORlBTQvV9nwL7mcB5IQTFKYbUw==
