@@ -1,41 +1,94 @@
 import requester as rq
-import manaflux as mf
 import unit_manager as um
+from datetime import datetime
 
 def initDailyPrice():
     result=[]
     result = rq.getFRPrice()
-    mf.sendDailyPrice(result)
+    return result
+    # mf.sendDailyPrice(result)
 
-def optimization(ASC_parameters,DESC_parameters):
+def optimization(target_value,ASC_parameters,DESC_parameters,prices):
+    ## Target
+    target = target_value
 
-    # Faire les conversions
+    ## Duration
+    duration_params = um.getTimeParams(ASC_parameters["min_activation_duration"])  # TimeUnit obj
+    # print(duration_params)
 
-    ### Reading parameters
-    target = 0
-    target_max = 0
-    if(ASC_parameters["target"] == -1):
-        target = target_max = ASC_parameters["target_max"]
+    ## Calc duration asc and desc
+    ASC_duration_activation = um.getDurationActivation(target,ASC_parameters["energy"])
+    DESC_duration_activation = um.getDurationActivation(target,DESC_parameters["energy"])
+    # print(ASC_duration_activation,DESC_duration_activation)
+
+    ASC_int_part=int(ASC_duration_activation.getValue())
+    ASC_deci_part=ASC_duration_activation.getValue() % 1
+    # print(ASC_int_part,ASC_deci_part)
+
+    nb_elm=0
+    if ASC_deci_part > 0:
+        nb_elm=ASC_int_part+1
     else:
-        target = ASC_parameters["target"]
-        target_max = ASC_parameters["target_max"]
+        nb_elm=ASC_int_part
 
-    duration_params = um.getTimeParams(ASC_parameters["duration"])
-    duration_seconds = duration_params["sec"]
+    list_result=[]
+    for i in range(nb_elm):
+        list_result.append(prices[i])
 
-    duration_activation = um.getDurationActivation(duration_params,target)
+    list_result=sorted(list_result,key=lambda elm:elm[0])
 
-    print(target,target_max,duration_seconds)
+    # ASC_total_sec=ASC_duration_activation.getSeconde()
+    # ASC_end_sec=ASC_total_sec-3_600*ASC_int_part
+
+    # if (ASC_end_sec != 0):
+        
+
+    print(list_result)
+
     return 1
+
+def verifySort(list):
+    old=float(list[0][1])
+    for elm in list:
+        if float(elm[1]) < old:
+            return False
+        old=float(elm[1])
+    return True
+
+def fprintSortedList(list):
+    for elm in list:
+        print(float(elm[1]))
+
+def formatPricesList(list):
+    new_list=[]
+    # 2023-03-20T12:00:00Z
+    for elm in list:
+        date=elm[0]
+        value=elm[1]
+        date=date.split('T')
+        date=date[1]
+        date=date.replace("Z","")
+        date = datetime.strptime(date,'%H:%M:%S')
+        new_list.append((date,value))
+    return new_list
 
 
 if __name__ == "__main__":
-    # initDailyPrice()
+    prices = initDailyPrice()
     # prices=mf.getDailyPrice()
 
-    # Exemple pour le Barrage de Grand'Maison
-    # ATENTION à la gestion des unités
-    ASC_parameters={"target":15_000,"target_max":37_000,"speed":135,"energy":1_270,"duration":"1h"}
-    DESC_parameters={"speed":216.3,"energy":1_800}
+    sorted_prices=sorted(prices,key=lambda price:price[1])
+    
+    # print(prices)
+    # print(sorted_prices)
+    # print("Verification ",verifySort(sorted_prices))
+    # fprintSortedList(sorted_prices)
 
-    optimization(ASC_parameters,DESC_parameters)
+    target={"val":5_000, "unit":"MW"}
+    ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h"}
+    DESC_parameters={"energy":{"val":1_800, "unit":"MWH"}}
+
+    # print(formatPricesList(sorted_prices))
+    # print()
+
+    optimization(target,ASC_parameters,DESC_parameters,formatPricesList(sorted_prices))

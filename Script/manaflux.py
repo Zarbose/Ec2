@@ -32,7 +32,7 @@ def getDailyPrice():
     results = []
     for table in result:
         for record in table.records:
-            results.append((record.get_field(), record.get_value()))
+            results.append((record.get_field(), float(record.get_value())))
     return results
 
 if __name__ == "__main__":

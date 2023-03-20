@@ -1,37 +1,66 @@
+class TimeUnit:
+    def __init__(self,unit,value):
+        self.unit=unit
+        self.value=value
+        self.seconde=0
+
+        if self.unit == "h":
+            self.seconde=self.value*3_600
+        elif self.unit == "m":
+            self.seconde=self.value*60
+        elif self.unit == "s":
+            self.seconde=self.value
+
+    def getSeconde(self):
+        return int(self.seconde)
+    
+    def getValue(self):
+        return self.value
+    
+    def __str__(self):
+        return str(self.value)+" "+str(self.unit)
+    
+class EnergyUnit:
+    def __init__(self,value,unit):
+        self.unit=unit
+        self.value=value
+        self.wattH=0
+
+        if self.unit == "TWH" or self.unit == "TW":
+            self.wattH = self.value*1_000_000_000_000
+        elif self.unit == "GWH" or self.unit == "GW":
+            self.wattH = self.value*1_000_000_000
+        elif self.unit == "MWH" or self.unit == "MW":
+            self.wattH = self.value*1_000_000
+        elif self.unit == "KWH" or self.unit == "KW":
+            self.wattH = self.value*1_000
+        elif self.unit == "WH" or self.unit == "W":
+            self.wattH = self.value
+
+
+    def getWattH(self):
+        return self.wattH
+
+
 def getTimeParams(str_time):
     units=["d","h","m","s"]
     for unit in units:
         if unit in str_time:
-            if unit == "d":
-                nb = int(str_time.replace("d",''))
-                return {"sec":nb*86_400, "value":nb, "unit":"day"}
-            elif unit == "h":
-                nb = int(str_time.replace("h",''))
-                return {"sec":nb*3_600, "value":nb, "unit":"hour"}
+            if unit == "h":
+                nb = float(str_time.replace("h",''))
+                return TimeUnit("h",nb)
             elif unit == "m":
-                nb = int(str_time.replace("m",''))
-                return {"sec":nb*60, "value":nb, "unit":"minute"}
+                nb = float(str_time.replace("m",''))
+                return TimeUnit("m",nb)
             elif unit == "s":
-                nb = int(str_time.replace("s",''))
-                return {"sec":nb, "value":nb, "unit":"second"}
+                nb = float(str_time.replace("s",''))
+                return TimeUnit("s",nb)
             
-def getDurationActivation(speed,energy,target):
-    # ATENTION conversion
-    result = {"sec":0, "value":0, "unit":""}
+def getDurationActivation(target,energy):
+    a = EnergyUnit(energy["val"],energy["unit"])
+    b = EnergyUnit(target["val"],target["unit"])
 
-
-    # if duration_params["unit"] == "day":
-    #     nb_s = duration_params["sec"]
-    #     nb_v = duration_params["value"]
-    #     return {"sec":nb*86_400, "value":nb, "unit":"day"}
-    # elif duration_params["unit"] == "hour":
-    #     return {"sec":nb*3_600, "value":nb, "unit":"hour"}
-    # elif duration_params["unit"] == "minute":
-    #     return {"sec":nb*60, "value":nb, "unit":"minute"}
-    # elif duration_params["unit"] == "second":
-    #     return {"sec":nb, "value":nb, "unit":"second"}
-
-    return 1
+    return TimeUnit("h",b.getWattH()/a.getWattH())
 
 
 if __name__ == "__main__":
