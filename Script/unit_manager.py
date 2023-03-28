@@ -63,5 +63,10 @@ def getDurationActivation(target,energy):
     return TimeUnit("h",b.getWattH()/a.getWattH())
 
 
+# ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h","max":{"val":37_000, "unit": "MW"},"max_actu":{"val":20_000, "unit": "MW"}}
+def formatAscParams(params_table):
+    return "TODO"
+
+
 if __name__ == "__main__":
     print("Cannot used as a script")

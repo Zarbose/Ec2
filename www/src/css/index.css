@@ -1,0 +1,45 @@
+main input {
+	white-space: normal;
+	margin: auto;
+}
+
+main {
+	display: grid;
+	grid-template-areas:
+	  "titre"
+	  "formZone"
+	  "scenario"
+	;
+	grid-template-rows: max-content max-content 1fr;
+	grid-template-columns: 1fr;
+	height: calc(100vh - 17px);
+	width: calc(100% - 10px);
+}
+
+main section#titre{
+    grid-area: titre;
+	text-align: center;
+    padding: 0.25em;
+	/* width: calc(100% - 1px); */
+}
+
+main section#formZone{
+    grid-area: formZone;
+	padding: 0.25em;
+}
+
+main section#scenario{
+    grid-area: scenario;
+    padding: 0.25em;
+}
+
+main section#scenario table{
+	/* width: calc(100% - 1px); */
+}
+
+#btn-back-to-top {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	display: none;
+}
