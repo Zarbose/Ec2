@@ -6,13 +6,12 @@ main input {
 main {
 	display: grid;
 	grid-template-areas:
-	  "titre"
-	  "formZone"
-	  "scenario"
+	  "titre titre"
+	  "formZone scenario"
 	;
-	grid-template-rows: max-content max-content 1fr;
-	grid-template-columns: 1fr;
-	height: calc(100vh - 17px);
+	grid-template-rows: 1fr 1fr;
+	grid-template-columns: 1fr 1fr;
+	height: calc(100vh - 10px);
 	width: calc(100% - 10px);
 }
 
@@ -20,7 +19,6 @@ main section#titre{
     grid-area: titre;
 	text-align: center;
     padding: 0.25em;
-	/* width: calc(100% - 1px); */
 }
 
 main section#formZone{
@@ -31,15 +29,26 @@ main section#formZone{
 main section#scenario{
     grid-area: scenario;
     padding: 0.25em;
+
+	height: calc(100vh - 10px - 4em);
 }
 
 main section#scenario table{
-	/* width: calc(100% - 1px); */
+	height: 100%;
+	width: 100%;
 }
 
-#btn-back-to-top {
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
+main section#scenario div#no-scroll{
+	height: calc(100vh - 10px - 7em);
+	overflow-y: scroll;
+}
+
+
+#no-scroll::-webkit-scrollbar {
 	display: none;
+}
+
+#no-scroll {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
