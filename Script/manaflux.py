@@ -35,5 +35,9 @@ def getDailyPrice():
             results.append((record.get_field(), float(record.get_value())))
     return results
 
+def sendOptiTime(data):
+
+    return 1
+
 if __name__ == "__main__":
     print("Cannot used as a script")

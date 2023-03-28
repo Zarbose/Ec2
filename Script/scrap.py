@@ -1,6 +1,7 @@
 import requester as rq
 import unit_manager as um
 from datetime import datetime
+from datetime import timedelta
 
 def initDailyPrice():
     result=[]
@@ -37,13 +38,18 @@ def optimization(target_value,ASC_parameters,DESC_parameters,prices):
 
     list_result=sorted(list_result,key=lambda elm:elm[0])
 
-    # ASC_total_sec=ASC_duration_activation.getSeconde()
-    # ASC_end_sec=ASC_total_sec-3_600*ASC_int_part
+    ASC_total_sec=ASC_duration_activation.getSeconde()
+    ASC_end_sec=3_600-(ASC_total_sec-3_600*ASC_int_part)
 
-    # if (ASC_end_sec != 0):
-        
+    # end=formatPicesElm(list_result[len(list_result)-1])
+    # end=formatDateInfuxToDatetime(list_result[len(list_result)-1])
+    end = ((end[0] + timedelta(hours=1)) - timedelta(seconds=ASC_end_sec), end[1])
 
-    print(list_result)
+    print(end[0])
+
+
+
+    # print(list_result)
 
     return 1
 
@@ -72,6 +78,19 @@ def formatPricesList(list):
         new_list.append((date,value))
     return new_list
 
+def formatDateInfuxToDatetime(elm):
+    date=elm[0]
+    value=elm[1]
+    date=date.split('T')
+    date=date[1]
+    date=date.replace("Z","")
+    date = datetime.strptime(date,'%H:%M:%S')
+    return (date,value)
+
+def formatDateDatetimeToInfux(elm):
+    print(elm)
+
+
 
 if __name__ == "__main__":
     prices = initDailyPrice()
@@ -79,16 +98,11 @@ if __name__ == "__main__":
 
     sorted_prices=sorted(prices,key=lambda price:price[1])
     
-    # print(prices)
-    # print(sorted_prices)
-    # print("Verification ",verifySort(sorted_prices))
-    # fprintSortedList(sorted_prices)
+    print(sorted_prices)
 
     target={"val":5_000, "unit":"MW"}
     ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h"}
     DESC_parameters={"energy":{"val":1_800, "unit":"MWH"}}
 
-    # print(formatPricesList(sorted_prices))
-    # print()
 
-    optimization(target,ASC_parameters,DESC_parameters,formatPricesList(sorted_prices))
+    optimization(target,ASC_parameters,DESC_parameters,sorted_prices)
