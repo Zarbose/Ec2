@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<title>Ec2</title>
+		<link rel="stylesheet" type="text/css" href="./src/css/index.css" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="./src/js/script.js"></script>
+    </head>
+	<body>
+		<main>
+            <button type="button" class="btn btn-danger btn-floating btn-lg" id="btn-back-to-top">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+
+            <section id="titre">
+                Titre
+            </section>
+            <section id="formZone">
+                <form class="ms-2">
+                    <div id="asc_parameters" class="">
+                        <div class="fw-bold text-decoration-underline">
+                            Paramétres ASC :
+                        </div>
+                        <div class="ms-3">
+                            <div class="mt-1">
+                                <label for="asc_energie" class="form-label">Energie</label>
+                                <div class="row" id="asc_energie">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="asc_energie" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-1">
+                                <label for="asc_activation" class="form-label">Temps d'activation minimal</label>
+                                <div class="row" id="asc_activation">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" placeholder="1.5, 300, ..." aria-label="asc_activation" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">Heure</option>
+                                            <option value="2">Minute</option>
+                                            <option value="3">Seconde</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-1">
+                                <label for="asc_maximum" class="form-label">Maximum</label>
+                                <div class="row" id="asc_maximum">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">W</option>
+                                            <option value="2">KW</option>
+                                            <option value="3">MW</option>
+                                            <option value="4">GW</option>
+                                            <option value="5">TW</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-1">
+                                <label for="asc_maximum_actu" class="form-label">Maximum actuel</label>
+                                <div class="row" id="asc_maximum_actu">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum_actu" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">W</option>
+                                            <option value="2">KW</option>
+                                            <option value="3">MW</option>
+                                            <option value="4">GW</option>
+                                            <option value="5">TW</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="desc_parameters" class="mt-5">
+                        <div class="fw-bold text-decoration-underline">
+                            Paramétres DESC :
+                        </div>
+                        <div class="ms-3">
+                            <div class="mt-1">
+                                <label for="desc_energie" class="form-label">Energie</label>
+                                <div class="row" id="energie">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="desc_energie" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-1">
+                                <label for="desc_maximum" class="form-label">Maximum</label>
+                                <div class="row" id="desc_maximum">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="desc_maximum" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">W</option>
+                                            <option value="2">KW</option>
+                                            <option value="3">MW</option>
+                                            <option value="4">GW</option>
+                                            <option value="5">TW</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-1">
+                                <label for="desc_maximum_actu" class="form-label">Maximum actuel</label>
+                                <div class="row" id="desc_maximum_actu">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="desc_maximum_actu" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">W</option>
+                                            <option value="2">KW</option>
+                                            <option value="3">MW</option>
+                                            <option value="4">GW</option>
+                                            <option value="5">TW</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success mt-3" type="submit">Simuler</button>
+                    <button class="btn btn-secondary mt-3" type="submit">Enregistrer et simuler</button>
+                </form>
+            </section>
+            <section id="scenario">
+                <div class="fw-bold text-decoration-underline ms-2 mt-3">
+                    Choisir un scénario : 
+                </div>
+                <table class="table table-hover" id="">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Titre du scenario</td>
+                            <td><button class="btn btn-success" type="submit">Simuler</button>
+                                <button class="btn btn-secondary" type="submit">Modifier</button>
+                                <button class="btn btn-danger" type="submit">Suprimer</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+	</body>
+</html>

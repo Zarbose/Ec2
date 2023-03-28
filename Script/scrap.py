@@ -101,8 +101,8 @@ if __name__ == "__main__":
     print(sorted_prices)
 
     target={"val":5_000, "unit":"MW"}
-    ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h"}
-    DESC_parameters={"energy":{"val":1_800, "unit":"MWH"}}
+    ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h","max":{"val":37_000, "unit": "MW"},"max_actu":{"val":20_000, "unit": "MW"}}
+    DESC_parameters={"energy":{"val":1_800, "unit":"MWH"},"max":{"val":33_000, "unit": "MW"},"max_actu":{"val":3_000, "unit": "MW"}}
 
 
     optimization(target,ASC_parameters,DESC_parameters,sorted_prices)
