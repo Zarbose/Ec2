@@ -154,6 +154,41 @@
                         </div>
                     </div>
 
+                    <div id="objectif" class="mt-5">
+                        <div class="fw-bold text-decoration-underline">
+                            Objectif
+                        </div>
+                        <div class="ms-3">
+                            <div class="mt-1">
+                                <label for="obj_energie" class="form-label">Energie</label>
+                                <div class="row" id="obj_energie">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="obj_energie" required>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">W</option>
+                                            <option value="2">KW</option>
+                                            <option value="3">MW</option>
+                                            <option value="4">GW</option>
+                                            <option value="5">TW</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ms-3">
+                            <div class="mt-1">
+                                <label for="obj_titre" class="form-label">Titre du scénario</label>
+                                <div class="row" id="obj_titre">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="Scénario STEP 1" aria-label="obj_titre">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button class="btn btn-success mt-3" type="submit">Simuler</button>
                     <button class="btn btn-secondary mt-3" type="submit">Enregistrer et simuler</button>
                 </form>
