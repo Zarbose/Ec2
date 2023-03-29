@@ -26,7 +26,7 @@ def getFRPrice():
             time=curent_day+"T0"+str(i)+":00:00Z"
         else:
             time=curent_day+"T"+str(i)+":00:00Z"
-        result.append((time,listValues[i].text))
+        result.append({'time':time,'val':listValues[i].text})
 
     return result
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 class TimeUnit:
     def __init__(self,unit,value):
         self.unit=unit
@@ -63,9 +64,22 @@ def getDurationActivation(target,energy):
     return TimeUnit("h",b.getWattH()/a.getWattH())
 
 
-# ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h","max":{"val":37_000, "unit": "MW"},"max_actu":{"val":20_000, "unit": "MW"}}
-def formatAscParams(params_table):
-    return "TODO"
+def formatDateInfuxToDatetime(elm):
+    date=elm['time']
+    value=elm['val']
+    date=date.split('T')
+    date=date[1]
+    date=date.replace("Z","")
+    date = datetime.strptime(date,'%H:%M:%S')
+    return (date,value)
+
+# 1900-01-01 23:56:13
+# 2023-03-29T00:00:00Z
+
+def formatDateDatetimeToInfux(elm):
+    curent_day = datetime.today().strftime('%Y-%m-%d')
+    string=str(curent_day)+"T"+str(elm.time())
+    return string
 
 
 if __name__ == "__main__":

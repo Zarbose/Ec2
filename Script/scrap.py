@@ -9,22 +9,15 @@ def initDailyPrice():
     return result
     # mf.sendDailyPrice(result)
 
-def optimization(target_value,ASC_parameters,DESC_parameters,prices):
-    ## Target
-    target = target_value
+def getVal(prices):
+  return float(prices['val'])
 
-    ## Duration
-    duration_params = um.getTimeParams(ASC_parameters["min_activation_duration"])  # TimeUnit obj
-    # print(duration_params)
+def getTime(list_result):
+    return list_result['time']
 
-    ## Calc duration asc and desc
-    ASC_duration_activation = um.getDurationActivation(target,ASC_parameters["energy"])
-    DESC_duration_activation = um.getDurationActivation(target,DESC_parameters["energy"])
-    # print(ASC_duration_activation,DESC_duration_activation)
-
+def constructResult(ASC_duration_activation,DESC_duration_activation):
     ASC_int_part=int(ASC_duration_activation.getValue())
     ASC_deci_part=ASC_duration_activation.getValue() % 1
-    # print(ASC_int_part,ASC_deci_part)
 
     nb_elm=0
     if ASC_deci_part > 0:
@@ -36,73 +29,48 @@ def optimization(target_value,ASC_parameters,DESC_parameters,prices):
     for i in range(nb_elm):
         list_result.append(prices[i])
 
-    list_result=sorted(list_result,key=lambda elm:elm[0])
+    list_result.sort(key=getTime)
 
     ASC_total_sec=ASC_duration_activation.getSeconde()
     ASC_end_sec=3_600-(ASC_total_sec-3_600*ASC_int_part)
 
-    # end=formatPicesElm(list_result[len(list_result)-1])
-    # end=formatDateInfuxToDatetime(list_result[len(list_result)-1])
+    end=um.formatDateInfuxToDatetime(list_result[len(list_result)-1])
     end = ((end[0] + timedelta(hours=1)) - timedelta(seconds=ASC_end_sec), end[1])
 
-    print(end[0])
+    list_result[len(list_result)-1]['time']= um.formatDateDatetimeToInfux(end[0])
+   
+    return list_result
 
 
+def optimization(target_value,ASC_parameters,DESC_parameters,prices):
+    ## Target
+    target = target_value
 
-    # print(list_result)
+    ## Duration
+    duration_params = um.getTimeParams(ASC_parameters["min_activation_duration"])  # TimeUnit obj
 
-    return 1
-
-def verifySort(list):
-    old=float(list[0][1])
-    for elm in list:
-        if float(elm[1]) < old:
-            return False
-        old=float(elm[1])
-    return True
-
-def fprintSortedList(list):
-    for elm in list:
-        print(float(elm[1]))
-
-def formatPricesList(list):
-    new_list=[]
-    # 2023-03-20T12:00:00Z
-    for elm in list:
-        date=elm[0]
-        value=elm[1]
-        date=date.split('T')
-        date=date[1]
-        date=date.replace("Z","")
-        date = datetime.strptime(date,'%H:%M:%S')
-        new_list.append((date,value))
-    return new_list
-
-def formatDateInfuxToDatetime(elm):
-    date=elm[0]
-    value=elm[1]
-    date=date.split('T')
-    date=date[1]
-    date=date.replace("Z","")
-    date = datetime.strptime(date,'%H:%M:%S')
-    return (date,value)
-
-def formatDateDatetimeToInfux(elm):
-    print(elm)
+    ## Calc duration asc and desc
+    ASC_duration_activation = um.getDurationActivation(target,ASC_parameters["energy"])
+    DESC_duration_activation = um.getDurationActivation(target,DESC_parameters["energy"])
 
 
+    result = constructResult(ASC_duration_activation,DESC_duration_activation)
+
+    return result
 
 if __name__ == "__main__":
     prices = initDailyPrice()
     # prices=mf.getDailyPrice()
 
-    sorted_prices=sorted(prices,key=lambda price:price[1])
-    
-    print(sorted_prices)
+    # print(prices)
+    prices.sort(key=getVal)
 
     target={"val":5_000, "unit":"MW"}
     ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h","max":{"val":37_000, "unit": "MW"},"max_actu":{"val":20_000, "unit": "MW"}}
     DESC_parameters={"energy":{"val":1_800, "unit":"MWH"},"max":{"val":33_000, "unit": "MW"},"max_actu":{"val":3_000, "unit": "MW"}}
 
 
-    optimization(target,ASC_parameters,DESC_parameters,sorted_prices)
+    # opt_table = getSegment(target,ASC_parameters,DESC_parameters,prices) TODO
+    opt_table = optimization(target,ASC_parameters,DESC_parameters,prices)
+
+    print(opt_table)
