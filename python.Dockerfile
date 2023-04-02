@@ -13,7 +13,7 @@ RUN pip install datetime
 RUN pip install beautifulsoup4
 RUN pip install 'influxdb-client[ciso]'
 
-WORKDIR $DockerHOME
+WORKDIR $DockerHOME/Ec2
 EXPOSE 8000
 
 ENTRYPOINT ["python3","manage.py","runserver","0.0.0.0:8000"]
