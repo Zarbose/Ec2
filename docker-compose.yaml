@@ -9,7 +9,6 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - influxdb
       - python
     depends_on:
       - influxdb
@@ -25,7 +24,6 @@ services:
     ports:
       - "8086:8086"
     networks:
-      - influxdb
       - python
       - grafana
     # volumes:
@@ -46,7 +44,6 @@ services:
 
 networks:
   python:
-  influxdb:
   grafana:
 
 volumes:
