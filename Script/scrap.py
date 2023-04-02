@@ -9,8 +9,6 @@ def initDailyPrice():
     result = rq.getFRPrice() 
     # mf.sendDailyPrice(result)
     return result
-   
-
 
 def constructSegmentList(ASC_duration_activation):
 
@@ -41,12 +39,10 @@ def constructSegmentList(ASC_duration_activation):
    
     return {"segments":list_result, "end":ut.formatElmDateDatetimeToInfux(end[0])}
 
-# {'segments': [{'time': '2023-04-02T13:00:00Z', 'val': '31.83'}, {'time': '2023-04-02T14:00:00Z', 'val': '17.52'}, {'time': '2023-04-02T17:00:00Z', 'val': '22.24'}, {'time': '2023-04-02T18:00:00Z', 'val': '31.13'}], 'end': '2023-04-02T18:56:13'}
-
 ### Pas finit ==> Faire des testes
 def constructTimePointList(segments_list):
 
-    segments_list={'segments': [{'time': '2023-04-02T09:00:00Z', 'val': '31.83'}, {'time': '2023-04-02T11:00:00Z', 'val': '17.52'}, {'time': '2023-04-02T17:00:00Z', 'val': '22.24'}, {'time': '2023-04-02T18:00:00Z', 'val': '31.13'}], 'end': '2023-04-02T18:56:13'}
+    # segments_list={'segments': [{'time': '2023-04-02T09:00:00Z', 'val': '31.83'}, {'time': '2023-04-02T11:00:00Z', 'val': '17.52'}, {'time': '2023-04-02T17:00:00Z', 'val': '22.24'}, {'time': '2023-04-02T18:00:00Z', 'val': '31.13'}], 'end': '2023-04-02T18:56:13'}
     ##  13h 15h - 17h 18h56
     key_point=[]
 
@@ -56,7 +52,10 @@ def constructTimePointList(segments_list):
     # print()
     old_time = segments[0]["time"]
     format_old_time=ut.formatDateInfuxToDatetime(old_time)
-    key_point.append(old_time)
+
+    periode = {"start":old_time,"end":""}
+
+    # key_point.append(old_time)
     for elm in segments:
         cur_time=elm["time"]
         format_cur_time=ut.formatDateInfuxToDatetime(cur_time)
@@ -64,19 +63,17 @@ def constructTimePointList(segments_list):
         delta = format_cur_time - format_old_time
 
         if (delta.seconds != 0) and (delta.seconds > 3600):
-            key_point.append(ut.formatDateDatetimeToInfux(format_old_time + timedelta(hours=1)))
-            key_point.append(ut.formatDateDatetimeToInfux(format_cur_time))
-            # print("break",cur_time)
-        # else:
-        #     print("contigue", cur_time)
+            periode["end"]=ut.formatDateDatetimeToInfux(format_old_time + timedelta(hours=1))
+            key_point.append(periode)
+            periode = {"start":cur_time,"end":""}
 
         format_old_time=format_cur_time
 
-    # key_point[len(key_point)-1]=end
-    key_point.append(end)
-    print(key_point)
+    periode["end"]=end
+    key_point.append(periode)
+    # print(key_point)
 
-    return 1
+    return key_point
 
 def optimization(target_value,ASC_parameters,DESC_parameters,prices):
 
@@ -86,9 +83,9 @@ def optimization(target_value,ASC_parameters,DESC_parameters,prices):
 
     time_point = constructTimePointList(segments_list)
 
-    # mf.sendOptiTime(segment_list)
+    print(time_point)
 
-    # print(segments_list)
+    # mf.sendOptiTime(segment_list)
 
 
 if __name__ == "__main__":
