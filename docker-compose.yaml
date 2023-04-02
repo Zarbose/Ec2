@@ -12,8 +12,8 @@ services:
       - python
     depends_on:
       - influxdb
-    volumes:
-      - "./Script:/home/data"
+    # volumes:
+    #   - "./Script:/home/data"
 
   influxdb:
     build:
@@ -30,7 +30,7 @@ services:
     #   - "influx-data:/var/lib/influxdb2"
 
   grafana:
-    image: grafana/grafana-oss
+    image: grafana/grafana
     container_name: grafana
     ports:
       - "3000:3000"
