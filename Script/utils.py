@@ -74,8 +74,13 @@ def getDurationActivation(target,energy):
 
     return TimeUnit("h",b.getNorma()/a.getNorma())
 
-
 def formatDateInfuxToDatetime(elm):
+    date=elm
+    date=date.replace("Z","")
+    date = datetime.strptime(date,'%Y-%m-%dT%H:%M:%S')
+    return date
+
+def formatElmDateInfuxToDatetime(elm):
     date=elm['time']
     value=elm['val']
     date=date.split('T')
@@ -88,6 +93,11 @@ def formatDateInfuxToDatetime(elm):
 # 2023-03-29T00:00:00Z
 
 def formatDateDatetimeToInfux(elm):
+    curent_day = datetime.today().strftime('%Y-%m-%d')
+    string=str(curent_day)+"T"+str(elm.time())
+    return string
+
+def formatElmDateDatetimeToInfux(elm):
     curent_day = datetime.today().strftime('%Y-%m-%d')
     string=str(curent_day)+"T"+str(elm.time())
     return string
