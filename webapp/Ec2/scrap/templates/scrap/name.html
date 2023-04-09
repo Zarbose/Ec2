@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<title>Ec2</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
+    </head>
+
+<!-- <form action="/test /" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form> -->
+
+    <body>
+        <main>
+            <section id="titre">
+                <h4>Configuration du simulateur</h4>
+            </section>
+            <section id="formZone">
+                <form class="ms-2">
+                    <div id="asc_parameters" class="">
+                        <div class="fw-bold text-decoration-underline">
+                            Paramétres montant :
+                        </div>
+                        <div class="ms-3">
+                            <div class="mt-1">
+                                <label for="asc_energie" class="form-label">Consomation</label>
+                                <div class="row" id="asc_energie">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="asc_energie" required>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">W</option>
+                                            <option value="2">KW</option>
+                                            <option value="3">MW</option>
+                                            <option value="4">GW</option>
+                                            <option value="5">TW</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-1">
+                                <label for="asc_activation" class="form-label">Temps de charge minimal</label>
+                                <div class="row" id="asc_activation">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="1.5, 300, ..." aria-label="asc_activation" required>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">Heure</option>
+                                            <option value="2">Minute</option>
+                                            <option value="3">Seconde</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-1">
+                                <label for="asc_maximum" class="form-label">Capacité maximal</label>
+                                <div class="row" id="asc_maximum">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum" required>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-1">
+                                <label for="asc_maximum_actu" class="form-label">Capacité actuel</label>
+                                <div class="row" id="asc_maximum_actu">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum_actu" required>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <form class="ms-2">
+                    {% csrf_token %}
+
+                    <!-- {% for field in form %}
+                        <div class="fieldWrapper">
+                            {{ field.label_tag }} {{ field }} {{ field }}
+                        </div>
+                    {% endfor %} -->
+
+                    {{ form.asc_consomation.label_tag }} {{ form.asc_consomation.label_tag }} {{ form.asc_consomation.label_tag }}
+
+                    <div class="ms-3">
+                        <div class="mt-1">
+                            <label for="asc_energie" class="form-label">Consomation</label>
+                            <div class="row" id="asc_energie">
+                                <div class="col">
+                                    {{ form.asc_consomation }}                                    
+                                </div>
+                                <div class="col-3">
+                                    <!-- <select class="form-select" aria-label="unite">
+                                        <option selected="1">W</option>
+                                        <option value="2">KW</option>
+                                        <option value="3">MW</option>
+                                        <option value="4">GW</option>
+                                        <option value="5">TW</option>
+                                    </select> -->
+                                    {{ form.asc_consomation_choices }}
+                                </div>
+                            </div>
+                        </div>
+                </form>
+            </section>
+
+            <section id="scenario" class="ms-4">
+
+            </section>
+        </main>
+    </body>
+</html>
