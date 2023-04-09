@@ -3,7 +3,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 url="http://localhost:8086"
 org="Ec2"
-bucket="daily-price"
+bucket="price"
 token="sdCawSGLxeLRVbaNsjdIMHspt7jdqvB6sVmRTzikxPeb9MxW_zDLoK7fk5qi4iWee2td9OSkp55RGeG6fARhFw=="
 
 #      79yVmTjFqqYQj5bXDRmNYJfqghYsqqom73zvgXStjkw1WK7QgGr-7rAiHNEkORlBTQvV9nwL7mcB5IQTFKYbUw==
@@ -21,7 +21,7 @@ def getDailyPrice():
     query_api = client.query_api()
 
     query = 'import "date"\
-    from(bucket:"daily-price")\
+    from(bucket:"price")\
     |> range(start: today(), stop: date.add(d: 24h, to: today()))\
     |> filter(fn:(r) => r["_measurement"] == "cout-electricite")\
     |> filter(fn:(r) => r["location"] == "France")\

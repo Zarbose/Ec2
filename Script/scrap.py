@@ -7,7 +7,7 @@ from datetime import timedelta
 def initDailyPrice():
     result=[]
     result = rq.getFRPrice() 
-    # mf.sendDailyPrice(result)
+    mf.sendDailyPrice(result)
     return result
 
 def constructSegmentList(ASC_duration_activation):
@@ -90,7 +90,7 @@ def optimization(target_value,ASC_parameters,DESC_parameters,prices):
 
 if __name__ == "__main__":
     prices = initDailyPrice()
-    # prices=mf.getDailyPrice()
+    # prices=mf.getDailyPrice() ## Une erreur
 
     prices.sort(key=ut.getVal)
 
@@ -98,6 +98,6 @@ if __name__ == "__main__":
     ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h","max":{"val":37_000, "unit": "MW"},"max_actu":{"val":20_000, "unit": "MW"}}
     DESC_parameters={"energy":{"val":1_800, "unit":"MWH"},"max":{"val":33_000, "unit": "MW"},"max_actu":{"val":3_000, "unit": "MW"}}
 
-    opt_table = optimization(target,ASC_parameters,DESC_parameters,prices)
+    # opt_table = optimization(target,ASC_parameters,DESC_parameters,prices)
 
     # print(opt_table)

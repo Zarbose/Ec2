@@ -1,6 +1,6 @@
 import "date"
 
-from(bucket:"daily-price")
+from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
 |> filter(fn:(r) => r._measurement == "cout-electricite")
 |> filter(fn:(r) => r.location == "France")
@@ -9,7 +9,7 @@ from(bucket:"daily-price")
 
 
 import "date"
-from(bucket: "daily-price")
+from(bucket: "price")
   |> range(start: today(), stop: date.add(d: 24h, to: today()))
   |> filter(fn: (r) => r["_measurement"] == "cout-electricite")
   |> filter(fn: (r) => r["location"] == "France")

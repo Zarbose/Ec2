@@ -1,4 +1,4 @@
-FROM python:3.9.16-bullseye
+FROM python:3.11-bullseye
 
 ENV DockerHOME=/home/app
 ENV WebHOME=/webapp/
