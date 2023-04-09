@@ -19,29 +19,29 @@
                 <form class="ms-2">
                     <div id="asc_parameters" class="">
                         <div class="fw-bold text-decoration-underline">
-                            Paramétres ASC :
+                            Paramétres montant :
                         </div>
                         <div class="ms-3">
                             <div class="mt-1">
-                                <label for="asc_energie" class="form-label">Energie</label>
+                                <label for="asc_energie" class="form-label">Consomation</label>
                                 <div class="row" id="asc_energie">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="1270, ..." aria-label="asc_energie" required>
                                     </div>
                                     <div class="col-3">
                                         <select class="form-select" aria-label="unite">
-                                            <option selected="1">Wh</option>
-                                            <option value="2">KWh</option>
-                                            <option value="3">MWh</option>
-                                            <option value="4">GWh</option>
-                                            <option value="5">TWh</option>
+                                            <option selected="1">W/h</option>
+                                            <option value="2">KW/h</option>
+                                            <option value="3">MW/h</option>
+                                            <option value="4">GW/h</option>
+                                            <option value="5">TW/h</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="mt-1">
-                                <label for="asc_activation" class="form-label">Temps d'activation minimal</label>
+                                <label for="asc_activation" class="form-label">Temps de charge minimal</label>
                                 <div class="row" id="asc_activation">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="1.5, 300, ..." aria-label="asc_activation" required>
@@ -57,53 +57,10 @@
                             </div>
 
                             <div class="mt-1">
-                                <label for="asc_maximum" class="form-label">Maximum</label>
+                                <label for="asc_maximum" class="form-label">Capacité maximal</label>
                                 <div class="row" id="asc_maximum">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum" required>
-                                    </div>
-                                    <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">W</option>
-                                            <option value="2">KW</option>
-                                            <option value="3">MW</option>
-                                            <option value="4">GW</option>
-                                            <option value="5">TW</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-1">
-                                <label for="asc_maximum_actu" class="form-label">Maximum actuel</label>
-                                <div class="row" id="asc_maximum_actu">
-                                    <div class="col">
-                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum_actu" required>
-                                    </div>
-                                    <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">W</option>
-                                            <option value="2">KW</option>
-                                            <option value="3">MW</option>
-                                            <option value="4">GW</option>
-                                            <option value="5">TW</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="desc_parameters" class="mt-5">
-                        <div class="fw-bold text-decoration-underline">
-                            Paramétres DESC :
-                        </div>
-                        <div class="ms-3">
-                            <div class="mt-1">
-                                <label for="desc_energie" class="form-label">Energie</label>
-                                <div class="row" id="energie">
-                                    <div class="col">
-                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="desc_energie" required>
                                     </div>
                                     <div class="col-3">
                                         <select class="form-select" aria-label="unite">
@@ -118,36 +75,79 @@
                             </div>
 
                             <div class="mt-1">
-                                <label for="desc_maximum" class="form-label">Maximum</label>
-                                <div class="row" id="desc_maximum">
+                                <label for="asc_maximum_actu" class="form-label">Capacité actuel</label>
+                                <div class="row" id="asc_maximum_actu">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="desc_maximum" required>
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum_actu" required>
                                     </div>
                                     <div class="col-3">
                                         <select class="form-select" aria-label="unite">
-                                            <option selected="1">W</option>
-                                            <option value="2">KW</option>
-                                            <option value="3">MW</option>
-                                            <option value="4">GW</option>
-                                            <option value="5">TW</option>
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="desc_parameters" class="mt-5">
+                        <div class="fw-bold text-decoration-underline">
+                            Paramétres descendant :
+                        </div>
+                        <div class="ms-3">
+                            <div class="mt-1">
+                                <label for="desc_energie" class="form-label">Consomation</label>
+                                <div class="row" id="energie">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="desc_energie" required>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">W/h</option>
+                                            <option value="2">KW/h</option>
+                                            <option value="3">MW/h</option>
+                                            <option value="4">GW/h</option>
+                                            <option value="5">TW/h</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mt-1">
-                                <label for="desc_maximum_actu" class="form-label">Maximum actuel</label>
+                                <label for="desc_maximum" class="form-label">Capacité maximal</label>
+                                <div class="row" id="desc_maximum">
+                                    <div class="col">
+                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="desc_maximum" required>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" aria-label="unite">
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-1">
+                                <label for="desc_maximum_actu" class="form-label">Capacité actuel</label>
                                 <div class="row" id="desc_maximum_actu">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="desc_maximum_actu" required>
                                     </div>
                                     <div class="col-3">
                                         <select class="form-select" aria-label="unite">
-                                            <option selected="1">W</option>
-                                            <option value="2">KW</option>
-                                            <option value="3">MW</option>
-                                            <option value="4">GW</option>
-                                            <option value="5">TW</option>
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
                                         </select>
                                     </div>
                                 </div>
@@ -161,18 +161,18 @@
                         </div>
                         <div class="ms-3">
                             <div class="mt-1">
-                                <label for="obj_energie" class="form-label">Energie</label>
+                                <label for="obj_energie" class="form-label">Quantité d'énergie souhaitée</label>
                                 <div class="row" id="obj_energie">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="1270, ..." aria-label="obj_energie" required>
                                     </div>
                                     <div class="col-3">
                                         <select class="form-select" aria-label="unite">
-                                            <option selected="1">W</option>
-                                            <option value="2">KW</option>
-                                            <option value="3">MW</option>
-                                            <option value="4">GW</option>
-                                            <option value="5">TW</option>
+                                            <option selected="1">Wh</option>
+                                            <option value="2">KWh</option>
+                                            <option value="3">MWh</option>
+                                            <option value="4">GWh</option>
+                                            <option value="5">TWh</option>
                                         </select>
                                     </div>
                                 </div>
