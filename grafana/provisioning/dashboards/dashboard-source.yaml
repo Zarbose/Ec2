@@ -1,0 +1,10 @@
+apiVersion: 1
+
+providers:
+  - name: dashboards
+    type: file
+    updateIntervalSeconds: 30
+    allowUiUpdates: false
+    options:
+      path: ./grafana/provisionig/dashboards/simulation.json
+      foldersFromFilesStructure: true
