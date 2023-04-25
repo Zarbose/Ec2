@@ -7,11 +7,11 @@ RUN mkdir -p $DockerHOME
 COPY $WebHOME $DockerHOME
 
 RUN pip install --upgrade pip
-RUN python3 -m pip install Django
-RUN pip install requests
-RUN pip install datetime
-RUN pip install beautifulsoup4
-RUN pip install 'influxdb-client[ciso]'
+RUN pip install Django
+
+# RUN pip install requests
+# RUN pip install datetime
+# RUN pip install beautifulsoup4
 
 WORKDIR $DockerHOME/Ec2
 EXPOSE 8000
