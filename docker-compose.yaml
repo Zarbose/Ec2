@@ -42,8 +42,7 @@ services:
     depends_on:
       - influxdb
     volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
     #   - "grafana-data:/var/lib/grafana"
 
 # secrets:
