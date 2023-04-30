@@ -3,25 +3,25 @@ from django.db import models
 from django.forms import ModelForm
 
 WATT_CHOICES =(
-    ("1", "W"),
-    ("2", "KW"),
-    ("3", "MW"),
-    ("4", "GW"),
-    ("5", "TW"),
+    (1, "W"),
+    (2, "KW"),
+    (3, "MW"),
+    (4, "GW"),
+    (5, "TW"),
 )
 
 WATTH_CHOICES =(
-    ("1", "Wh"),
-    ("2", "KWh"),
-    ("3", "MWh"),
-    ("4", "GWh"),
-    ("5", "TWh"),
+    (1, "Wh"),
+    (2, "KWh"),
+    (3, "MWh"),
+    (4, "GWh"),
+    (5, "TWh"),
 )
 
 TIME_CHOICES =(
-    ("1", "Heure"),
-    ("2", "Minute"),
-    ("3", "Seconde"),
+    (1, "Heure"),
+    (2, "Minute"),
+    (3, "Seconde"),
 )
 
 class Scenario(models.Model):

@@ -33,11 +33,6 @@ main section#scenario{
 	height: calc(100vh - 10px - 4em);
 }
 
-main section#scenario table{
-	height: 100%;
-	width: 100%;
-}
-
 main section#scenario div#no-scroll{
 	height: calc(100vh - 10px - 7em);
 	overflow-y: scroll;
@@ -52,3 +47,9 @@ main section#scenario div#no-scroll{
 	-ms-overflow-style: none;
 	scrollbar-width: none;
 }
+
+/* Ici mais bug de refresh */
+/* main section#scenario table{
+	height: 100%;
+	width: 100%;
+} */

@@ -162,7 +162,40 @@
             </section>
 
             <section id="scenario" class="ms-4">
+                <div class="fw-bold text-decoration-underline">
+                    Choisir un scénario : 
+                </div>
+                <div id="no-scroll">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Titre</th>
+                            <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
+                            {% if scenarios_lenght > 0 %}
+                                {% for scenario in scenarios %}
+                                    <tr>
+                                        <th scope="row">{{ scenario.id }}</th>
+                                        <td>{{ scenario.titre }}</td>
+                                        <td><button class="btn btn-success" type="submit">Charger</button>
+                                            <button class="btn btn-secondary" type="submit">Modifier</button>
+                                            <button class="btn btn-danger" type="submit">Suprimer</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="3"><h5>Aucun scénario enregistrer pour le moment</h5></th>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </main>
     </body>
