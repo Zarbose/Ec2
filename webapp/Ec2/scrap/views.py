@@ -6,7 +6,9 @@ from scrap.models import Scenario
 def index(request):
     if request.method == "POST":
         if 'small_simuler' in request.POST:
-            return HttpResponseRedirect("/grafana/")
+            id = request.POST['small_simuler']
+            # print(type(id))
+            return HttpResponseRedirect("/grafana/"+id)
         elif 'small_suprimer' in request.POST:
             id = request.POST['small_suprimer']
             return HttpResponseRedirect("/scenario_delete/"+id)
@@ -40,8 +42,9 @@ def index(request):
 
             # print(form.cleaned_data)
             # print(scenario.titre)
-
-            return HttpResponseRedirect("/grafana/")
+            id = scenario.id
+            # print("ID = ",type(id))
+            return HttpResponseRedirect("/grafana/"+str(id))
     else:
         form = ScenarioForm()
 
@@ -56,9 +59,10 @@ def index(request):
 
     return render(request, "scrap/name.html", context)
 
-def grafana(request):
+def grafana(request,id):
     scenarios = Scenario.objects.all()
     context = {
+        "id": id,
         "scenarios": scenarios
     }
     return render(request,"scrap/test.html",context)
@@ -67,4 +71,4 @@ def scenario_delete(request, id):
     scenario = Scenario.objects.get(id=id)
     scenario.delete()
 
-    return HttpResponseRedirect("/get_name/")
+    return HttpResponseRedirect("/")
