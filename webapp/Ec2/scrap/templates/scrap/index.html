@@ -10,48 +10,48 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
     </head>
-	<body>
-		<main>
+
+<!-- <form action="/test /" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form> -->
+
+    <body>
+        <main>
             <section id="titre">
                 <h4>Configuration du simulateur</h4>
             </section>
             <section id="formZone">
-                <form class="ms-2">
+
+                <form class="ms-2" method="post" name="main_form">
+                    {% csrf_token %}
                     <div id="asc_parameters" class="">
                         <div class="fw-bold text-decoration-underline">
                             Paramétres montant :
                         </div>
+
                         <div class="ms-3">
                             <div class="mt-1">
                                 <label for="asc_energie" class="form-label">Consomation</label>
                                 <div class="row" id="asc_energie">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="asc_energie" required>
+                                        {{ form.asc_consomation }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">W</option>
-                                            <option value="2">KW</option>
-                                            <option value="3">MW</option>
-                                            <option value="4">GW</option>
-                                            <option value="5">TW</option>
-                                        </select>
+                                        {{ form.asc_consomation_choices }}
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="mt-1">
                                 <label for="asc_activation" class="form-label">Temps de charge minimal</label>
                                 <div class="row" id="asc_activation">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="1.5, 300, ..." aria-label="asc_activation" required>
+                                        {{ form.asc_tmp_min }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">Heure</option>
-                                            <option value="2">Minute</option>
-                                            <option value="3">Seconde</option>
-                                        </select>
+                                        {{ form.asc_tmp_min_choices }}
                                     </div>
                                 </div>
                             </div>
@@ -60,16 +60,10 @@
                                 <label for="asc_maximum" class="form-label">Capacité maximal</label>
                                 <div class="row" id="asc_maximum">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum" required>
+                                        {{ form.asc_capa_max }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">Wh</option>
-                                            <option value="2">KWh</option>
-                                            <option value="3">MWh</option>
-                                            <option value="4">GWh</option>
-                                            <option value="5">TWh</option>
-                                        </select>
+                                        {{ form.asc_capa_max_choices }}
                                     </div>
                                 </div>
                             </div>
@@ -78,16 +72,10 @@
                                 <label for="asc_maximum_actu" class="form-label">Capacité actuel</label>
                                 <div class="row" id="asc_maximum_actu">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="asc_maximum_actu" required>
+                                        {{ form.asc_capa_actu }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">Wh</option>
-                                            <option value="2">KWh</option>
-                                            <option value="3">MWh</option>
-                                            <option value="4">GWh</option>
-                                            <option value="5">TWh</option>
-                                        </select>
+                                        {{ form.asc_capa_actu_choices }}
                                     </div>
                                 </div>
                             </div>
@@ -103,16 +91,10 @@
                                 <label for="desc_energie" class="form-label">Consomation</label>
                                 <div class="row" id="energie">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="desc_energie" required>
+                                        {{ form.desc_consomation }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">W</option>
-                                            <option value="2">KW</option>
-                                            <option value="3">MW</option>
-                                            <option value="4">GW</option>
-                                            <option value="5">TW</option>
-                                        </select>
+                                        {{ form.desc_consomation_choices }}
                                     </div>
                                 </div>
                             </div>
@@ -121,16 +103,10 @@
                                 <label for="desc_maximum" class="form-label">Capacité maximal</label>
                                 <div class="row" id="desc_maximum">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="desc_maximum" required>
+                                        {{ form.desc_capa_max }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">Wh</option>
-                                            <option value="2">KWh</option>
-                                            <option value="3">MWh</option>
-                                            <option value="4">GWh</option>
-                                            <option value="5">TWh</option>
-                                        </select>
+                                        {{ form.desc_capa_max_choices }}
                                     </div>
                                 </div>
                             </div>
@@ -139,16 +115,10 @@
                                 <label for="desc_maximum_actu" class="form-label">Capacité actuel</label>
                                 <div class="row" id="desc_maximum_actu">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="100, 3000, ..." aria-label="desc_maximum_actu" required>
+                                        {{ form.desc_capa_actu }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">Wh</option>
-                                            <option value="2">KWh</option>
-                                            <option value="3">MWh</option>
-                                            <option value="4">GWh</option>
-                                            <option value="5">TWh</option>
-                                        </select>
+                                        {{ form.desc_capa_actu_choices }}
                                     </div>
                                 </div>
                             </div>
@@ -164,16 +134,10 @@
                                 <label for="obj_energie" class="form-label">Quantité d'énergie souhaitée</label>
                                 <div class="row" id="obj_energie">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="1270, ..." aria-label="obj_energie" required>
+                                        {{ form.target }}
                                     </div>
                                     <div class="col-3">
-                                        <select class="form-select" aria-label="unite">
-                                            <option selected="1">Wh</option>
-                                            <option value="2">KWh</option>
-                                            <option value="3">MWh</option>
-                                            <option value="4">GWh</option>
-                                            <option value="5">TWh</option>
-                                        </select>
+                                        {{ form.target_choices }}
                                     </div>
                                 </div>
                             </div>
@@ -184,16 +148,18 @@
                                 <label for="obj_titre" class="form-label">Titre du scénario</label>
                                 <div class="row" id="obj_titre">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="Scénario STEP 1" aria-label="obj_titre">
+                                        {{ form.titre }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-success mt-3" type="submit">Simuler</button>
-                    <button class="btn btn-secondary mt-3" type="submit">Enregistrer et simuler</button>
+
+                    <button class="btn btn-success mt-3" type="submit" name="main_simuler">Simuler</button>
+                    <button class="btn btn-secondary mt-3" type="submit" name="main_add_simuler">Enregistrer et simuler</button>
                 </form>
             </section>
+
             <section id="scenario" class="ms-4">
                 <div class="fw-bold text-decoration-underline">
                     Choisir un scénario : 
@@ -202,33 +168,37 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">Id</th>
                             <th scope="col">Titre</th>
                             <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Titre du scenario</td>
-                                <td><button class="btn btn-success" type="submit">Charger</button>
-                                    <button class="btn btn-secondary" type="submit">Modifier</button>
-                                    <button class="btn btn-danger" type="submit">Suprimer</button>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Titre du scenario</td>
-                                <td><button class="btn btn-success" type="submit">Charger</button>
-                                    <button class="btn btn-secondary" type="submit">Modifier</button>
-                                    <button class="btn btn-danger" type="submit">Suprimer</button>
-                                </td>
-                            </tr>
+                            {% if scenarios_lenght > 0 %}
+                                {% for scenario in scenarios %}
+                                    <tr>
+                                        <th scope="row">{{ scenario.id }}</th>
+                                        <td>{{ scenario.titre }}</td>
+                                        <td>
+                                            <form name="small_form" value="small_form" method="post">
+                                                {% csrf_token %}
+                                                <button class="btn btn-success" type="submit" name="small_simuler" value='{{ scenario.id }}'>Simuler</button>
+                                                <button class="btn btn-danger" type="submit" name="small_suprimer" value='{{ scenario.id }}'>Suprimer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="3"><h5>Aucun scénario enregistrer pour le moment</h5></th>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
             </section>
         </main>
-	</body>
+    </body>
 </html>

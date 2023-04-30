@@ -4,24 +4,6 @@ from scrap.forms import ScenarioForm
 from scrap.models import Scenario
 
 def index(request):
-    return render(request,"scrap/index.html")
-
-def grafana(request):
-    scenarios = Scenario.objects.all()
-    context = {
-        "scenarios": scenarios
-    }
-    return render(request,"scrap/test.html",context)
-
-def scenario_delete(request, id):
-    scenario = Scenario.objects.get(id=id)
-    scenario.delete()
-
-    return HttpResponseRedirect("/get_name/")
-
-
-def get_name(request):
-
     if request.method == "POST":
         if 'small_simuler' in request.POST:
             return HttpResponseRedirect("/grafana/")
@@ -73,3 +55,16 @@ def get_name(request):
     }
 
     return render(request, "scrap/name.html", context)
+
+def grafana(request):
+    scenarios = Scenario.objects.all()
+    context = {
+        "scenarios": scenarios
+    }
+    return render(request,"scrap/test.html",context)
+
+def scenario_delete(request, id):
+    scenario = Scenario.objects.get(id=id)
+    scenario.delete()
+
+    return HttpResponseRedirect("/get_name/")
