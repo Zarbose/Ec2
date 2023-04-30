@@ -24,7 +24,7 @@
             </section>
             <section id="formZone">
 
-                <form class="ms-2" method="post">
+                <form class="ms-2" method="post" name="main_form">
                     {% csrf_token %}
                     <div id="asc_parameters" class="">
                         <div class="fw-bold text-decoration-underline">
@@ -36,7 +36,11 @@
                                 <label for="asc_energie" class="form-label">Consomation</label>
                                 <div class="row" id="asc_energie">
                                     <div class="col">
-                                        {{ form.asc_consomation }}                                    
+                                        <!-- {% if cur_scenario != None %} -->
+                                            {{ form.asc_consomation }}
+                                        <!-- {% else %}
+                                            {{ cur_scenario.asc_consomation }}
+                                        {% endif %} -->
                                     </div>
                                     <div class="col-3">
                                         {{ form.asc_consomation_choices }}
@@ -155,9 +159,8 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-success mt-3" type="submit">Simuler</button>
-                    <button class="btn btn-secondary mt-3" type="submit">Enregistrer et simuler</button>
-
+                    <button class="btn btn-success mt-3" type="submit" name="main_simuler">Simuler</button>
+                    <button class="btn btn-secondary mt-3" type="submit" name="main_add_simuler">Enregistrer et simuler</button>
                 </form>
             </section>
 
@@ -181,9 +184,13 @@
                                     <tr>
                                         <th scope="row">{{ scenario.id }}</th>
                                         <td>{{ scenario.titre }}</td>
-                                        <td><button class="btn btn-success" type="submit">Charger</button>
-                                            <button class="btn btn-secondary" type="submit">Modifier</button>
-                                            <button class="btn btn-danger" type="submit">Suprimer</button>
+                                        <td>
+                                            <form name="small_form" value="small_form" method="post">
+                                                {% csrf_token %}
+                                                <button class="btn btn-success" type="submit" name="small_simuler" value='{{ scenario.id }}'>Simuler</button>
+                                                <button class="btn btn-secondary" type="submit" name="small_modifier" value='{{ scenario.id }}'>Modifier</button>
+                                                <button class="btn btn-danger" type="submit" name="small_suprimer" value='{{ scenario.id }}'>Suprimer</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 {% endfor %}

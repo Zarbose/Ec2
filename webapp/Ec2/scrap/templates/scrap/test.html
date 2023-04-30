@@ -2,10 +2,13 @@
 <!DOCTYPE html>
 <html lang="fr">
     <body>
-        Test<br>
+        <h3>Redirction Grafana</h3>
 
-        {% for scenario in scenarios %}
-            {{ scenario.titre }}<br>
-        {% endfor %}
+        Liste des scénarios :
+        <ul>
+            {% for scenario in scenarios %}
+                <li>{{ scenario.titre }}</li>
+            {% endfor %}
+        <ul>
     </body>
 </html>
