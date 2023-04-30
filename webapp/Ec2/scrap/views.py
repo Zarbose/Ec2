@@ -52,7 +52,7 @@ def index(request):
         # "scenarios_lenght": 0
     }
 
-    return render(request, "scrap/name.html", context)
+    return render(request, "scrap/index.html", context)
 
 def grafana(request,id):
     scenarios = Scenario.objects.all()
@@ -61,7 +61,7 @@ def grafana(request,id):
         "scenarios": scenarios
     }
 
-    return render(request,"scrap/test.html",context)
+    return render(request,"scrap/simulation.html",context)
 
 def scenario_delete(request, id):
     scenario = Scenario.objects.get(id=id)

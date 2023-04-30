@@ -159,7 +159,7 @@
                     Choisir un scénario : 
                 </div>
                 <div id="no-scroll">
-                    <table class="table table-hover">
+                    <table class="table table-hover" style="height: auto;">
                         <thead>
                             <tr>
                             <th scope="col">Id</th>
@@ -168,11 +168,10 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            {% if scenarios_lenght > 0 %}
+                            {% if scenarios_lenght > 0 %}  
                                 {% for scenario in scenarios %}
                                     <tr>
-                                        <th scope="row">{{ scenario.id }}</th>
+                                        <th scope="row">#</th>
                                         <td>{{ scenario.titre }}</td>
                                         <td>
                                             <form name="small_form" value="small_form" method="post">

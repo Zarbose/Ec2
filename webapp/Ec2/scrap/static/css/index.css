@@ -48,8 +48,7 @@ main section#scenario div#no-scroll{
 	scrollbar-width: none;
 }
 
-/* Ici mais bug de refresh */
-/* main section#scenario table{
+main section#scenario table{
 	height: 100%;
 	width: 100%;
-} */
+}
