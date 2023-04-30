@@ -23,34 +23,6 @@ TIME_CHOICES =(
     ("3", "Seconde"),
 )
 
-class Test(forms.Form):
-    asc_consomation = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '1270, ...','aria-label': 'asc_energie','autocomplete': 'off'}))
-    asc_consomation_choices = forms.ChoiceField(choices = WATT_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-    
-    asc_tmp_min = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '1.5, 300, ...','aria-label': 'asc_activation','autocomplete': 'off'}))
-    asc_tmp_min_choices = forms.ChoiceField(choices = TIME_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-
-    asc_capa_max = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '100, 3000, ...','aria-label': 'asc_maximum','autocomplete': 'off'}))
-    asc_capa_max_choices = forms.ChoiceField(choices = WATTH_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-
-    asc_capa_actu  = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '100, 3000, ...','aria-label': 'asc_maximum_actu','autocomplete': 'off'}))
-    asc_capa_actu_choices  = forms.ChoiceField(choices = WATTH_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-
-
-    desc_consomation = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '1270, ...','aria-label': 'desc_energie','autocomplete': 'off'}))
-    desc_consomation_choices = forms.ChoiceField(choices = WATT_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-
-    desc_capa_max = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '100, 3000, ...','aria-label': 'desc_maximum','autocomplete': 'off'}))
-    desc_capa_max_choices = forms.ChoiceField(choices = WATTH_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-
-    desc_capa_actu  = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '100, 3000, ...','aria-label': 'desc_maximum_actu','autocomplete': 'off'}))
-    desc_capa_actu_choices  = forms.ChoiceField(choices = WATTH_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-
-    titre  = forms.CharField(max_length=50,required=False,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Scénario STEP 1','aria-label': 'obj_titre','autocomplete': 'off'}))
-
-    target  = forms.FloatField(min_value=0,required=True,widget=forms.TextInput(attrs={'class': 'form-control','placeholder': '1270, ...','aria-label': 'obj_energie','autocomplete': 'off'}))
-    target_choices  = forms.ChoiceField(choices = WATTH_CHOICES ,widget=forms.Select(attrs={'class': 'form-select','aria-label': 'unite'}))
-
 class ScenarioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -95,6 +67,7 @@ class ScenarioForm(forms.ModelForm):
         self.fields['titre'].widget.attrs['placeholder'] = placeholder_3
         self.fields['titre'].widget.attrs['aria-label'] = 'obj_titre'
         self.fields['titre'].widget.attrs['autocomplete'] = 'off'
+        # self.fields['titre'].widget.attrs['required'] = 'required'
 
         self.fields['target'].widget.attrs['placeholder'] = placeholder_1
         self.fields['target'].widget.attrs['aria-label'] = 'obj_energie'

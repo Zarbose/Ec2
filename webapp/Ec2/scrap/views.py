@@ -7,7 +7,6 @@ def index(request):
     if request.method == "POST":
         if 'small_simuler' in request.POST:
             id = request.POST['small_simuler']
-            # print(type(id))
             return HttpResponseRedirect("/grafana/"+id)
         elif 'small_suprimer' in request.POST:
             id = request.POST['small_suprimer']
@@ -15,7 +14,6 @@ def index(request):
 
     if request.method == "POST":
         form = ScenarioForm(request.POST)
-        print(request.POST)
         if form.is_valid():
 
             scenario = Scenario()
@@ -39,11 +37,8 @@ def index(request):
             scenario.titre = form.cleaned_data['titre']
 
             scenario.save()
-
-            # print(form.cleaned_data)
-            # print(scenario.titre)
             id = scenario.id
-            # print("ID = ",type(id))
+
             return HttpResponseRedirect("/grafana/"+str(id))
     else:
         form = ScenarioForm()
@@ -65,6 +60,7 @@ def grafana(request,id):
         "id": id,
         "scenarios": scenarios
     }
+
     return render(request,"scrap/test.html",context)
 
 def scenario_delete(request, id):
