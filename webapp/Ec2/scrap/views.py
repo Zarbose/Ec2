@@ -19,31 +19,15 @@ def scenario_delete(request, id):
 
     return HttpResponseRedirect("/get_name/")
 
-def scenario_modify(request, id):
-    scenario = Scenario.objects.get(id=id)
-    scenarios = Scenario.objects.all()
-    context = {
-        "form": ScenarioForm(),
-        "cur_scenario": scenario,
-        "scenarios": scenarios,
-        "scenarios_lenght": scenarios.count()
-        # "scenarios_lenght": 0
-    }
-
-    return render(request, "scrap/name.html", context)
 
 def get_name(request):
 
-    # if 'small_simuler' in request.POST:
-    #     return HttpResponseRedirect("/grafana/")
-    
-    # elif 'small_modifier' in request.POST:
-    #     id = request.POST['small_modifier']
-    #     print("Modification ",request.POST['small_modifier'])
-
-    # elif 'small_suprimer' in request.POST:
-    #     id = request.POST['small_suprimer']
-    #     return HttpResponseRedirect("/scenario_delete/"+id)
+    if request.method == "POST":
+        if 'small_simuler' in request.POST:
+            return HttpResponseRedirect("/grafana/")
+        elif 'small_suprimer' in request.POST:
+            id = request.POST['small_suprimer']
+            return HttpResponseRedirect("/scenario_delete/"+id)
 
     if request.method == "POST":
         form = ScenarioForm(request.POST)
@@ -75,15 +59,14 @@ def get_name(request):
             # print(form.cleaned_data)
             # print(scenario.titre)
 
-            return HttpResponseRedirect("/test/")
-
-    # if a GET (or any other method) we'll create a blank form
+            return HttpResponseRedirect("/grafana/")
     else:
         form = ScenarioForm()
 
     scenarios = Scenario.objects.all()
     context = {
         "form": form,
+        "cur_scenario": 0,
         "scenarios": scenarios,
         "scenarios_lenght": scenarios.count()
         # "scenarios_lenght": 0

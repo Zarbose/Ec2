@@ -36,11 +36,7 @@
                                 <label for="asc_energie" class="form-label">Consomation</label>
                                 <div class="row" id="asc_energie">
                                     <div class="col">
-                                        <!-- {% if cur_scenario != None %} -->
-                                            {{ form.asc_consomation }}
-                                        <!-- {% else %}
-                                            {{ cur_scenario.asc_consomation }}
-                                        {% endif %} -->
+                                        {{ form.asc_consomation }}
                                     </div>
                                     <div class="col-3">
                                         {{ form.asc_consomation_choices }}
@@ -188,7 +184,6 @@
                                             <form name="small_form" value="small_form" method="post">
                                                 {% csrf_token %}
                                                 <button class="btn btn-success" type="submit" name="small_simuler" value='{{ scenario.id }}'>Simuler</button>
-                                                <button class="btn btn-secondary" type="submit" name="small_modifier" value='{{ scenario.id }}'>Modifier</button>
                                                 <button class="btn btn-danger" type="submit" name="small_suprimer" value='{{ scenario.id }}'>Suprimer</button>
                                             </form>
                                         </td>
