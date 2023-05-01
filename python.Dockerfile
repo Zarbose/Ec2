@@ -6,6 +6,8 @@ ENV WebHOME=/webapp/
 RUN mkdir -p $DockerHOME  
 COPY $WebHOME $DockerHOME
 
+# COPY init.sh /root/init.sh
+
 RUN pip install --upgrade pip
 RUN pip install Django
 # RUN python3 Script/startup.py
@@ -17,4 +19,5 @@ RUN pip install Django
 WORKDIR $DockerHOME/Ec2
 EXPOSE 8000
 
+# ENTRYPOINT ["./init.sh"]
 ENTRYPOINT ["python3","manage.py","runserver","0.0.0.0:8000"]
