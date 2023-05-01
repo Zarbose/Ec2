@@ -12,8 +12,6 @@ services:
       - python
     depends_on:
       - influxdb
-    # volumes:
-    #   - "./Script:/home/data"
 
   influxdb:
     build:
@@ -26,8 +24,6 @@ services:
     networks:
       - python
       - grafana
-    # volumes:
-    #   - "influx-data:/var/lib/influxdb2"
 
   grafana:
     build:
@@ -43,15 +39,7 @@ services:
       - influxdb
     volumes:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
-    #   - "grafana-data:/var/lib/grafana"
 
-# secrets:
-  # admin_login:
-  #   file: admin_login.txt
-  # admin_password:
-  #  file: admin_password.txt
-  # token:
-  #  file: token.txt
 
 networks:
   python:
@@ -59,4 +47,3 @@ networks:
 
 volumes:
   influx-data:
-  # grafana-data:

@@ -8,6 +8,7 @@ COPY $WebHOME $DockerHOME
 
 RUN pip install --upgrade pip
 RUN pip install Django
+# RUN python3 Script/startup.py
 
 # RUN pip install requests
 # RUN pip install datetime

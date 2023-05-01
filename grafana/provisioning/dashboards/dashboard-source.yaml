@@ -1,9 +1,10 @@
 apiVersion: 1
 
 providers:
-  - name: 'simulation'
+  - name: 'Default'
     type: file
-    updateIntervalSeconds: 30
+    disableDeletion: true
+    updateIntervalSeconds: 10
     allowUiUpdates: false
     options:
       path: /etc/grafana/provisioning/dashboards

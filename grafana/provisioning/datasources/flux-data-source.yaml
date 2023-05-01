@@ -5,7 +5,7 @@ datasources:
     type: influxdb
     access: proxy
     url: http://influxdb:8086
-    default: true
+    isDefault: true
     jsonData:
       version: Flux
       organization: Ec2
@@ -13,3 +13,4 @@ datasources:
       tlsSkipVerify: true
     secureJsonData:
       token: c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ==
+    editable: false
