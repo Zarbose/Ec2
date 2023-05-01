@@ -6,6 +6,8 @@ services:
       dockerfile: python.Dockerfile
     image: ec2-python
     container_name: python
+    env_file:
+      - secrets/.env_python
     ports:
       - "8000:8000"
     networks:
