@@ -76,8 +76,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 14,
+        "h": 11,
+        "w": 18,
         "x": 0,
         "y": 0
       },
@@ -115,6 +115,188 @@
       ],
       "title": "Prix du jour",
       "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout-electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> mean()",
+          "refId": "A"
+        }
+      ],
+      "title": "Prix moyen de la journée",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 18,
+        "y": 6
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout-electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> min()",
+          "refId": "A"
+        }
+      ],
+      "title": "Prix minimal",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 21,
+        "y": 6
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout-electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> max()",
+          "refId": "A"
+        }
+      ],
+      "title": "Prix  maximal",
+      "type": "stat"
     }
   ],
   "refresh": "",
