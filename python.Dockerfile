@@ -1,23 +1,21 @@
 FROM python:3.11-bullseye
 
-ENV DockerHOME=/home/app
-ENV WebHOME=/webapp/
 
-RUN mkdir -p $DockerHOME  
-COPY $WebHOME $DockerHOME
+WORKDIR /app
+COPY webapp /webapp
+COPY script /script
 
-# COPY init.sh /root/init.sh
-
+## Pip
 RUN pip install --upgrade pip
 RUN pip install Django
-# RUN python3 Script/startup.py
+RUN pip install requests
+RUN pip install datetime
 
-# RUN pip install requests
+# RUN python3 script/startup.py
+
 # RUN pip install datetime
 # RUN pip install beautifulsoup4
 
-WORKDIR $DockerHOME/Ec2
 EXPOSE 8000
 
-# ENTRYPOINT ["./init.sh"]
-ENTRYPOINT ["python3","manage.py","runserver","0.0.0.0:8000"]
+# ENTRYPOINT ["python3","webapp/manage.py","runserver","0.0.0.0:8000"]
