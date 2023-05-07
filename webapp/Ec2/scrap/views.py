@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from scrap.forms import ScenarioForm
 from scrap.models import Scenario
+import os
 
 def index(request):
     if request.method == "POST":
@@ -60,6 +61,8 @@ def grafana(request,id):
         "id": id,
         "scenarios": scenarios
     }
+
+    os.system("python3 /app/script/startup.py")
 
     return render(request,"scrap/simulation.html",context)
 

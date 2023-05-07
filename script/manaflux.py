@@ -1,7 +1,7 @@
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
-url="http://localhost:8086"
+url="http://influxdb:8086"
 org="Ec2"
 bucket="price"
 token="c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ=="
