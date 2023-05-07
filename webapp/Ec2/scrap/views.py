@@ -17,6 +17,8 @@ def index(request):
         form = ScenarioForm(request.POST)
         if form.is_valid():
 
+            print(form.cleaned_data)
+
             scenario = Scenario()
 
             scenario.asc_consomation = form.cleaned_data['asc_consomation']
