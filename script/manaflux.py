@@ -9,7 +9,7 @@ token="c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOL
 #      c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ==
 
 
-def sendDailyPrice(data):
+def manaflux_send_daily_price(data):
     client = InfluxDBClient(url=url, token=token, org=org)
     write_api = client.write_api(write_options=SYNCHRONOUS)
     for i in range(len(data)):
