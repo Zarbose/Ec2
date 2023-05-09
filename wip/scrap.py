@@ -7,7 +7,7 @@ from datetime import timedelta
 def initDailyPrice():
     result=[]
     result = rq.getFRPrice() 
-    mf.sendDailyPrice(result)
+    mf.manaflux_send_daily_price(result)
     return result
 
 def constructSegmentList(ASC_duration_activation):

@@ -7,7 +7,7 @@ def initDailyPrice():
     if result == -1:
         print("Site web indisponible")
     else:
-        mf.sendDailyPrice(result)
+        mf.manaflux_send_daily_price(result)
 
 if __name__ == "__main__":
     initDailyPrice()

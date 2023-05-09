@@ -1,11 +1,12 @@
 import requester as rq
 import utilsV2 as ut
+import manaflux as mf
 from datetime import timedelta
 
 def scrap_initDailyPrice():
     result=[]
     result = rq.getFRPrice() 
-    # mf.sendDailyPrice(result)
+    # mf.manaflux_send_daily_price(result)
     return result
 
 def scrap_extract_prices():
@@ -35,12 +36,14 @@ def scrap_extract_params(params):
 
     return formatted_settings
 
-def scrap_contruct_segment_list(formatted_prices,formatted_settings):
+def scrap_basic_construction_segment_list(formatted_prices,formatted_settings):
     asc_duration = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
     asc_duration_int=int(asc_duration)
     asc_duration_deci=asc_duration % 1
 
-    # print(asc_duration_int,asc_duration_deci)
+    if (asc_duration_int >= 24):
+        return -1
+    # print(asc_duration, asc_duration_int,asc_duration_deci)
 
     # Construction de la liste des segments ou le pompage va être effectué
     if asc_duration_deci != 0:
@@ -66,6 +69,17 @@ def scrap_contruct_segment_list(formatted_prices,formatted_settings):
     # print(end)
 
     return {"segments":list_segments, "end":end}
+
+def scrap_complex_construction_segment_list(formatted_prices,formatted_settings):
+    asc_duration = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
+    asc_duration_int=int(asc_duration)
+    asc_duration_deci=asc_duration % 1
+
+    if (asc_duration_int >= 24):
+        return -1
+
+def scrap_contruct_segment_list(formatted_prices,formatted_settings):
+    return scrap_basic_construction_segment_list(formatted_prices,formatted_settings)
 
 def scrap_construct_influxdb_list(optimized_segment_list):
     end = optimized_segment_list['end']
@@ -93,9 +107,14 @@ def scrap_construct_influxdb_list(optimized_segment_list):
 
 def scrap_optimisation(formatted_prices,formatted_settings):
     optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings)
-    point_list = scrap_construct_influxdb_list(optimized_segment_list)
-    for elm in ut.utils_format_point_to_influxdb(point_list):
-        print(elm)
+    if (optimized_segment_list == -1):
+        print("Impossible d'optimiser")
+    else : 
+        point_list = scrap_construct_influxdb_list(optimized_segment_list)
+
+        mf.manaflux_send_opti(ut.utils_format_point_to_influxdb(point_list))
+        # for elm in ut.utils_format_point_to_influxdb(point_list):
+        #     print(elm)
 
 
 

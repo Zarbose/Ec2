@@ -67,20 +67,25 @@ def utils_format_point_to_influxdb(point_list): # bugger
     string = "1900 1 1 0 0"
     old_time = datetime.strptime(string, "%Y %m %d %H %M")
 
-    copy_formated_list = formated_list
+    end_time = formated_list[len(formated_list)-1]['time']
+    copy_formated_list = []
+    for elm in formated_list:
+        copy_formated_list.append(elm)
+
 
     for elm in copy_formated_list:
         while old_time < utils_format_infludb_to_datetime(elm['time']):
-            if elm == formated_list[len(formated_list)-1]:
-                formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time), 'val': 0})
+            if utils_format_infludb_to_datetime(elm['time']) == utils_format_infludb_to_datetime(end_time) :
+                formated_list.append({ 'time': utils_format_datetime_to_infuxdb(utils_format_infludb_to_datetime(elm['time']) + timedelta(minutes=1)), 'val': 0})
                 formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time + timedelta(hours=1)), 'val': 0})
+                old_time += timedelta(hours=1)
             else:
                 formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time), 'val': 0})
-            old_time += timedelta(hours=1)
+                old_time += timedelta(hours=1)
         old_time += timedelta(hours=1)
 
     while old_time < datetime.strptime("1900 1 1 23 59", "%Y %m %d %H %M"):
-        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time), 'val': 0})
+        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time), 'val': -1})
         old_time += timedelta(hours=1)
 
     formated_list.sort(key=utils_key_sorted_influxdb)
