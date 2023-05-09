@@ -297,6 +297,129 @@
       ],
       "title": "Prix  maximal",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P951FEA4DE68E13C5"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "statut-charge {location=\"France\", name=\"resultat-otpi\"}"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "transparent",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 21,
+        "x": 0,
+        "y": 11
+      },
+      "id": 10,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.99,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "hide": false,
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat-otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"statut-charge\")\n|> filter(fn:(r) => r._value == 1)",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "hide": false,
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat-otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"statut-charge\")\n|> filter(fn:(r) => r._value == -1)",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P951FEA4DE68E13C5"
+          },
+          "hide": false,
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat-otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"statut-charge\")\n|> filter(fn:(r) => r._value == 0)",
+          "refId": "A"
+        }
+      ],
+      "title": "Période de charge et décharge",
+      "type": "barchart"
     }
   ],
   "refresh": "",
