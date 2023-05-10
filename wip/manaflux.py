@@ -44,6 +44,15 @@ def manaflux_send_total_duration(data):
     point = Point("resultat-otpi").tag("location", "France").field("duration-total", float(data)).time(date, WritePrecision.NS)
     write_api.write(bucket=bucket, record=point)
 
+def manaflux_send_rendement(data):
+    date = datetime.today().strftime('%Y-%m-%d')
+    date = date+"T01:00:00Z"
+
+    client = InfluxDBClient(url=url, token=token, org=org)
+    write_api = client.write_api(write_options=SYNCHRONOUS)
+    point = Point("resultat-otpi").tag("location", "France").field("rendement", float(data)).time(date, WritePrecision.NS)
+    write_api.write(bucket=bucket, record=point)
+
 def getDailyPrice():
     client = InfluxDBClient(url=url, token=token, org=org)
     query_api = client.query_api()

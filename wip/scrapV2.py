@@ -126,7 +126,7 @@ def scrap_total_price_operation(optimized_segment_list, formatted_settings):
 
     return total
 
-## Clcul de la durée d'activation / désactivation de l'opération
+## Calcul de la durée d'activation / désactivation de l'opération
 def scrap_total_duration_operation(point_list):
     total = 0
     for elm in point_list:
@@ -139,15 +139,25 @@ def scrap_total_duration_operation(point_list):
     return round(total/3600,2)
 
 
+def scrap_calcul_rendement(formatted_settings):
+    a = formatted_settings['asc_consomation']
+    b = formatted_settings['desc_consomation']
+    return round(a/b,2)
+
 def scrap_optimisation(formatted_prices,formatted_settings):
     optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings)
     if (optimized_segment_list == -1):
         print("Impossible d'optimiser")
     else : 
         total_price = scrap_total_price_operation(optimized_segment_list,formatted_settings)
-        mf.manaflux_send_total_price(total_price) 
+        mf.manaflux_send_total_price(total_price)
+
+        rendement = scrap_calcul_rendement(formatted_settings)
+        mf.manaflux_send_rendement(rendement)
+
 
         point_list = scrap_construct_influxdb_list(optimized_segment_list)
+        
         
         total_duration = scrap_total_duration_operation(point_list)
         mf.manaflux_send_total_duration(total_duration)
@@ -160,7 +170,7 @@ def scrap_optimisation(formatted_prices,formatted_settings):
 
 if __name__ == "__main__":
 
-    input_params = {'asc_consomation': '1_170', 'asc_consomation_choices': 4, 
+    input_params = {'asc_consomation': '1_270', 'asc_consomation_choices': 4, 
                     'asc_tmp_min': '1', 'asc_tmp_min_choices': 1, 
                     'asc_capa_max': '37_000', 'asc_capa_max_choices': 4, 
                     'asc_capa_actu': '20_000', 'asc_capa_actu_choices': 4, 
