@@ -36,6 +36,7 @@ def scrap_extract_params(params):
 
     return formatted_settings
 
+## Simple optimisation
 def scrap_basic_construction_segment_list(formatted_prices,formatted_settings):
     asc_duration = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
     asc_duration_int=int(asc_duration)
@@ -53,7 +54,9 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings):
 
     list_segments = []
     for i in range(nb_segments):
-        list_segments.append(formatted_prices[i])
+        elm = {'time': formatted_prices[i]['time'], 'val': formatted_prices[i]['val'], 'status': 1}
+        list_segments.append(elm)
+    
     
     list_segments.sort(key=ut.utils_key_sorted_times)
 
@@ -70,6 +73,7 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings):
 
     return {"segments":list_segments, "end":end}
 
+## Optimisation complexe
 def scrap_complex_construction_segment_list(formatted_prices,formatted_settings):
     asc_duration = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
     asc_duration_int=int(asc_duration)
@@ -78,9 +82,11 @@ def scrap_complex_construction_segment_list(formatted_prices,formatted_settings)
     if (asc_duration_int >= 24):
         return -1
 
+## Choix de l'optimisation a effectuer
 def scrap_contruct_segment_list(formatted_prices,formatted_settings):
     return scrap_basic_construction_segment_list(formatted_prices,formatted_settings)
 
+## Formatage pour influxdb
 def scrap_construct_influxdb_list(optimized_segment_list):
     end = optimized_segment_list['end']
     list_segments = optimized_segment_list['segments']
@@ -105,12 +111,46 @@ def scrap_construct_influxdb_list(optimized_segment_list):
 
     return points
 
+## Calcul du cout total de l'opération
+def scrap_total_price_operation(optimized_segment_list, formatted_settings):
+    asc = ut.utils_format_watt_to_mega_watt(formatted_settings['asc_consomation'])
+    end = optimized_segment_list['segments'][len(optimized_segment_list['segments'])-1]['time']
+    end = end + timedelta(hours=1)
+    delta = end - optimized_segment_list['end']
+    delta = int(delta.total_seconds()) / 3600
+    total = 0
+    for elm in optimized_segment_list['segments']:
+        total = total + asc * 1
+    total -= asc * delta
+    total = round(total,3) 
+
+    return total
+
+## Clcul de la durée d'activation / désactivation de l'opération
+def scrap_total_duration_operation(point_list):
+    total = 0
+    for elm in point_list:
+        a = elm['start']
+        b = elm['end']
+        delta = b - a
+        delta = int(delta.total_seconds())
+        total += delta
+
+    return round(total/3600,2)
+
+
 def scrap_optimisation(formatted_prices,formatted_settings):
     optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings)
     if (optimized_segment_list == -1):
         print("Impossible d'optimiser")
     else : 
+        total_price = scrap_total_price_operation(optimized_segment_list,formatted_settings)
+        mf.manaflux_send_total_price(total_price) 
+
         point_list = scrap_construct_influxdb_list(optimized_segment_list)
+        
+        total_duration = scrap_total_duration_operation(point_list)
+        mf.manaflux_send_total_duration(total_duration)
 
         mf.manaflux_send_opti(ut.utils_format_point_to_influxdb(point_list))
         # for elm in ut.utils_format_point_to_influxdb(point_list):
@@ -120,7 +160,7 @@ def scrap_optimisation(formatted_prices,formatted_settings):
 
 if __name__ == "__main__":
 
-    input_params = {'asc_consomation': '1_270', 'asc_consomation_choices': 4, 
+    input_params = {'asc_consomation': '1_170', 'asc_consomation_choices': 4, 
                     'asc_tmp_min': '1', 'asc_tmp_min_choices': 1, 
                     'asc_capa_max': '37_000', 'asc_capa_max_choices': 4, 
                     'asc_capa_actu': '20_000', 'asc_capa_actu_choices': 4, 

@@ -1,3 +1,4 @@
+## Prix du jour
 import "date"
 
 from(bucket:"price")
@@ -7,6 +8,7 @@ from(bucket:"price")
 |> filter(fn:(r) => r._field == "euros")
 
 
+## Prix du jour moyenne
 import "date"
 
 from(bucket:"price")
@@ -17,6 +19,7 @@ from(bucket:"price")
 |> mean()
 
 
+## Prix du jour min
 import "date"
 
 from(bucket:"price")
@@ -26,6 +29,8 @@ from(bucket:"price")
 |> filter(fn:(r) => r._field == "euros")
 |> min()
 
+
+## Prix du jour max
 import "date"
 
 from(bucket:"price")
@@ -36,6 +41,7 @@ from(bucket:"price")
 |> max()
 
 
+## Optimisation
 import "date"
 
 from(bucket:"price")
@@ -44,3 +50,23 @@ from(bucket:"price")
 |> filter(fn:(r) => r.location == "France")
 |> filter(fn:(r) => r._field == "statut-charge")
 |> filter(fn:(r) => r._value == 0)
+
+
+## Prix total
+import "date"
+
+from(bucket:"price")
+|> range(start: today(), stop: date.add(d: 24h, to: today()))
+|> filter(fn:(r) => r._measurement == "resultat-otpi")
+|> filter(fn:(r) => r.location == "France")
+|> filter(fn:(r) => r._field == "prix-total")
+
+
+## Durée total
+import "date"
+
+from(bucket:"price")
+|> range(start: today(), stop: date.add(d: 24h, to: today()))
+|> filter(fn:(r) => r._measurement == "resultat-otpi")
+|> filter(fn:(r) => r.location == "France")
+|> filter(fn:(r) => r._field == "duration-total")

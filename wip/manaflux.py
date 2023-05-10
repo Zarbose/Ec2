@@ -1,5 +1,6 @@
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
+from datetime import datetime
 
 url="http://localhost:8086"
 org="Ec2"
@@ -17,14 +18,31 @@ def manaflux_send_daily_price(data):
         write_api.write(bucket=bucket, record=point)
 
 def manaflux_send_opti(data):
-    for elm in data:
-        print(elm)
+    # for elm in data:
+    #     print(elm)
     client = InfluxDBClient(url=url, token=token, org=org)
     write_api = client.write_api(write_options=SYNCHRONOUS)
     for elm in data:
         point = Point("resultat-otpi").tag("location", "France").field("statut-charge", float(elm["val"])).time(elm["time"], WritePrecision.NS)
         write_api.write(bucket=bucket, record=point)
 
+def manaflux_send_total_price(data):
+    date = datetime.today().strftime('%Y-%m-%d')
+    date = date+"T01:00:00Z"
+
+    client = InfluxDBClient(url=url, token=token, org=org)
+    write_api = client.write_api(write_options=SYNCHRONOUS)
+    point = Point("resultat-otpi").tag("location", "France").field("prix-total", float(data)).time(date, WritePrecision.NS)
+    write_api.write(bucket=bucket, record=point)
+
+def manaflux_send_total_duration(data):
+    date = datetime.today().strftime('%Y-%m-%d')
+    date = date+"T01:00:00Z"
+
+    client = InfluxDBClient(url=url, token=token, org=org)
+    write_api = client.write_api(write_options=SYNCHRONOUS)
+    point = Point("resultat-otpi").tag("location", "France").field("duration-total", float(data)).time(date, WritePrecision.NS)
+    write_api.write(bucket=bucket, record=point)
 
 def getDailyPrice():
     client = InfluxDBClient(url=url, token=token, org=org)

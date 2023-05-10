@@ -42,6 +42,9 @@ def utils_format_time(elm,unit):
         return elm*60
     elif (unit == 3):
         return elm
+    
+def utils_format_watt_to_mega_watt(elm):
+    return elm/1_000_000_000
 
 # 2023-05-07T14:00:00Z ==> datetime(14:00:00)
 def utils_format_infludb_to_datetime(elm):
@@ -85,7 +88,7 @@ def utils_format_point_to_influxdb(point_list): # bugger
         old_time += timedelta(hours=1)
 
     while old_time < datetime.strptime("1900 1 1 23 59", "%Y %m %d %H %M"):
-        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time), 'val': -1})
+        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time), 'val': -1}) ## ICI !!!!!!
         old_time += timedelta(hours=1)
 
     formated_list.sort(key=utils_key_sorted_influxdb)
