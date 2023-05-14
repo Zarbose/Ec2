@@ -38,10 +38,6 @@ class ScenarioForm(forms.ModelForm):
         self.fields['asc_consomation'].widget.attrs['aria-label'] = 'asc_energie'
         self.fields['asc_consomation'].widget.attrs['autocomplete'] = 'off'
 
-        self.fields['asc_tmp_min'].widget.attrs['placeholder'] = placeholder_2
-        self.fields['asc_tmp_min'].widget.attrs['aria-label'] = 'asc_activation'
-        self.fields['asc_tmp_min'].widget.attrs['autocomplete'] = 'off'
-
         self.fields['asc_capa_max'].widget.attrs['placeholder'] = placeholder_2
         self.fields['asc_capa_max'].widget.attrs['aria-label'] = 'asc_maximum'
         self.fields['asc_capa_max'].widget.attrs['autocomplete'] = 'off'

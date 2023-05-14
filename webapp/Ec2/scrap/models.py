@@ -1,6 +1,4 @@
 from django.db import models
-# from models import Scenario
-from django.forms import ModelForm
 
 WATT_CHOICES =(
     (1, "W"),
@@ -28,9 +26,6 @@ class Scenario(models.Model):
 
     asc_consomation = models.CharField(max_length=100)
     asc_consomation_choices = models.IntegerField(choices=WATT_CHOICES,default="1")
-    
-    asc_tmp_min = models.CharField(max_length=100)
-    asc_tmp_min_choices = models.IntegerField(choices=TIME_CHOICES,default="1")
 
     asc_capa_max = models.CharField(max_length=100)
     asc_capa_max_choices = models.IntegerField(choices=WATTH_CHOICES,default="1")
@@ -52,6 +47,17 @@ class Scenario(models.Model):
     target_choices  = models.IntegerField(choices=WATTH_CHOICES,default="1")
 
     titre  = models.CharField(max_length=100)
+
+    def __repr__(self):
+        string = {'asc_consomation': self.asc_consomation, 'asc_consomation_choices': self.asc_consomation_choices, 
+                    'asc_capa_max': self.asc_capa_max, 'asc_capa_max_choices': self.asc_capa_max_choices, 
+                    'asc_capa_actu': self.asc_capa_actu, 'asc_capa_actu_choices': self.asc_capa_actu_choices, 
+                    'desc_consomation': self.desc_consomation, 'desc_consomation_choices': self.desc_consomation_choices, 
+                    'desc_capa_max': self.desc_capa_max, 'desc_capa_max_choices': self.desc_capa_max_choices, 
+                    'desc_capa_actu': self.desc_capa_actu, 'desc_capa_actu_choices': self.desc_capa_actu_choices, 
+                    'target': self.target, 'target_choices': self.target_choices, 
+                    'titre': self.titre}
+        return string
 
 
 

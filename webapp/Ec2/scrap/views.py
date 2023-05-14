@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from scrap.forms import ScenarioForm
 from scrap.models import Scenario
-import os
+import subprocess, os
 
 def index(request):
     if request.method == "POST":
@@ -23,8 +23,6 @@ def index(request):
 
             scenario.asc_consomation = form.cleaned_data['asc_consomation']
             scenario.asc_consomation_choices = form.cleaned_data['asc_consomation_choices']
-            scenario.asc_tmp_min = form.cleaned_data['asc_tmp_min']
-            scenario.asc_tmp_min_choices = form.cleaned_data['asc_tmp_min_choices']
             scenario.asc_capa_max = form.cleaned_data['asc_capa_max']
             scenario.asc_capa_max_choices = form.cleaned_data['asc_capa_max_choices']
             scenario.asc_capa_actu = form.cleaned_data['asc_capa_actu']
@@ -63,8 +61,11 @@ def grafana(request,id):
         "id": id,
         "scenarios": scenarios
     }
+    sc = Scenario.objects.get(pk=id)
+    sc=str(sc.__repr__())
 
     os.system("python3 /app/script/startup.py")
+    subprocess.run(["python3", "/app/script/scrap.py",sc])
 
     return render(request,"scrap/simulation.html",context)
 
