@@ -91,6 +91,10 @@ def utils_format_point_to_influxdb(point_list): # bugger
         formated_list.append({ 'time': utils_format_datetime_to_infuxdb(old_time), 'val': 0}) ## ICI !!!!!!
         old_time += timedelta(hours=1)
 
+    for elm in point_list:
+        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(elm['start'] - timedelta(seconds=1)), 'val': 0})
+        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(elm['end'] + timedelta(seconds=1)), 'val': 0})
+
     formated_list.sort(key=utils_key_sorted_influxdb)
     return formated_list
 
