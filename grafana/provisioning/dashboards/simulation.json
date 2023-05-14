@@ -24,6 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -43,16 +44,29 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 80,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
+            "pointSize": 6,
             "scaleDistribution": {
               "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -84,25 +98,16 @@
       },
       "id": 2,
       "options": {
-        "barRadius": 0,
-        "barWidth": 0.96,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
         "tooltip": {
           "mode": "single",
           "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
+        }
       },
       "targets": [
         {
@@ -115,7 +120,7 @@
         }
       ],
       "title": "Prix du jour",
-      "type": "barchart"
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -583,7 +588,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "revision": 1,
   "schemaVersion": 38,
   "style": "dark",
@@ -592,8 +597,8 @@
     "list": []
   },
   "time": {
-    "from": "now",
-    "to": "now"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {},
   "timezone": "utc",
