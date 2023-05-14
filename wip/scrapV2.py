@@ -10,8 +10,8 @@ def scrap_initDailyPrice():
     return result
 
 def scrap_extract_prices():
-    prices = scrap_initDailyPrice()
-    # prices=mf.getDailyPrice() ## Une erreur
+    # prices = scrap_initDailyPrice()
+    prices=mf.manaflux_get_daily_price() ## Une erreur
     prices.sort(key=ut.utils_key_sorted_prices)
 
     return prices
@@ -54,14 +54,9 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings):
 
     list_segments = []
     for i in range(nb_segments):
-        elm = {'time': formatted_prices[i]['time'], 'val': formatted_prices[i]['val'], 'status': 1}
+        elm = {'time': formatted_prices[i]['time'], 'val': formatted_prices[i]['val']}
         list_segments.append(elm)
     
-    
-    list_segments.sort(key=ut.utils_key_sorted_times)
-
-    # ut.utils_print_prices(list_segments)
-
     # Calcul de la date de fin
     total_sec=asc_duration*3_600
     end_sec=3_600-(total_sec-3_600*asc_duration_int)
@@ -69,7 +64,8 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings):
 
     end=list_segments[len(list_segments)-1]
     end = (end['time'] + timedelta(hours=1)) - timedelta(seconds=end_sec)
-    # print(end)
+
+    list_segments.sort(key=ut.utils_key_sorted_times)
 
     return {"segments":list_segments, "end":end}
 
@@ -89,6 +85,7 @@ def scrap_contruct_segment_list(formatted_prices,formatted_settings):
 ## Formatage pour influxdb
 def scrap_construct_influxdb_list(optimized_segment_list):
     end = optimized_segment_list['end']
+    end += timedelta(hours=4)
     list_segments = optimized_segment_list['segments']
 
     points = []
@@ -99,29 +96,50 @@ def scrap_construct_influxdb_list(optimized_segment_list):
 
         if len(points) == 0:
             old_point_end=list_segments[0]['time'] + timedelta(hours=1)
-            points.append({'start':list_segments[0]['time'] ,'end':list_segments[0]['time'] + timedelta(hours=1)})
+            if elm['time'].hour == end.hour:
+                points.append({'start':list_segments[0]['time'] ,'end':end})
+            else:
+                points.append({'start':list_segments[0]['time'] ,'end':list_segments[0]['time'] + timedelta(hours=1)})
+
         elif point_to_add['start'] == old_point_end: # Contigue
-            points[len(points)-1]['end'] = point_to_add['end']
+            if elm['time'].hour == end.hour:
+                points[len(points)-1]['end'] = end
+            else:
+                points[len(points)-1]['end'] = point_to_add['end']
         else: # Non contigue
-            points.append(point_to_add)
+            if elm['time'].hour == end.hour:
+                point_to_add['end']=end
+                points.append(point_to_add)
+            else:
+                points.append(point_to_add)
 
-        old_point_end=point_to_add['end']
+        old_point_end=points[len(points)-1]['end']
 
-    points[len(points)-1]['end'] = end
+    if points[len(points)-1]['end'].hour == end.hour:
+        points[len(points)-1]['end'] = end
 
     return points
 
 ## Calcul du cout total de l'opération
 def scrap_total_price_operation(optimized_segment_list, formatted_settings):
     asc = ut.utils_format_watt_to_mega_watt(formatted_settings['asc_consomation'])
-    end = optimized_segment_list['segments'][len(optimized_segment_list['segments'])-1]['time']
+
+    to_find=optimized_segment_list['end'].hour
+    for elm in optimized_segment_list['segments']:
+        if elm['time'].hour == to_find:
+            elm_end = elm
+            break
+
+    end=elm_end['time']
+
     end = end + timedelta(hours=1)
     delta = end - optimized_segment_list['end']
     delta = int(delta.total_seconds()) / 3600
-    total = 0
+    total=0
     for elm in optimized_segment_list['segments']:
-        total = total + asc * 1
-    total -= asc * delta
+        total = total + asc * elm['val']
+
+    total -= (asc * delta)*elm_end['val']
     total = round(total,3) 
 
     return total
@@ -138,7 +156,6 @@ def scrap_total_duration_operation(point_list):
 
     return round(total/3600,2)
 
-
 def scrap_calcul_rendement(formatted_settings):
     a = formatted_settings['asc_consomation']
     b = formatted_settings['desc_consomation']
@@ -146,27 +163,27 @@ def scrap_calcul_rendement(formatted_settings):
 
 def scrap_optimisation(formatted_prices,formatted_settings):
     optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings)
+
     if (optimized_segment_list == -1):
         print("Impossible d'optimiser")
     else : 
-        total_price = scrap_total_price_operation(optimized_segment_list,formatted_settings)
+        
+        total_price = scrap_total_price_operation(optimized_segment_list,formatted_settings) # OK
         mf.manaflux_send_total_price(total_price)
 
-        rendement = scrap_calcul_rendement(formatted_settings)
+    
+        rendement = scrap_calcul_rendement(formatted_settings) # OK
         mf.manaflux_send_rendement(rendement)
 
 
-        point_list = scrap_construct_influxdb_list(optimized_segment_list)
+        point_list = scrap_construct_influxdb_list(optimized_segment_list) # OK
         
         
         total_duration = scrap_total_duration_operation(point_list)
         mf.manaflux_send_total_duration(total_duration)
+        exit(0)
 
         mf.manaflux_send_opti(ut.utils_format_point_to_influxdb(point_list))
-        # for elm in ut.utils_format_point_to_influxdb(point_list):
-        #     print(elm)
-
-
 
 if __name__ == "__main__":
 
@@ -181,7 +198,9 @@ if __name__ == "__main__":
                     'titre': 'Titre'}
     
     prices = scrap_extract_prices()
+    # print(prices)
     # ut.utils_print_prices(prices)
+
     formatted_prices = scrap_format_prices(prices)
     formatted_settings = scrap_extract_params(input_params)
 
