@@ -2,7 +2,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from scrap.forms import ScenarioForm
 from scrap.models import Scenario
-import subprocess, os
+from scrap.script import scrap as sc
+import os
 
 def index(request):
     if request.method == "POST":
@@ -61,11 +62,12 @@ def grafana(request,id):
         "id": id,
         "scenarios": scenarios
     }
-    sc = Scenario.objects.get(pk=id)
-    sc=str(sc.__repr__())
+    sce = Scenario.objects.get(pk=id)
+    sce=sce.__repr__()
 
-    os.system("python3 /app/script/startup.py")
-    subprocess.run(["python3", "/app/script/scrap.py",sc])
+    # os.system("python3 /app/script/startup.py")
+    os.system("python3 /mnt/c/Users/simon/Documents/Scolaire/MASTER/M1/Cours/Projet_Spe/Ec2/webapp/Ec2/scrap/script/startup.py")
+    sc.scrap_main(sce)
 
     return render(request,"scrap/simulation.html",context)
 
