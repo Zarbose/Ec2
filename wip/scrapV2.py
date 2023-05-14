@@ -11,7 +11,7 @@ def scrap_initDailyPrice():
 
 def scrap_extract_prices():
     # prices = scrap_initDailyPrice()
-    prices=mf.manaflux_get_daily_price() ## Une erreur
+    prices=mf.manaflux_get_daily_price()
     prices.sort(key=ut.utils_key_sorted_prices)
 
     return prices
@@ -26,7 +26,6 @@ def scrap_extract_params(params):
     formatted_settings = {}
 
     formatted_settings['asc_consomation'] = ut.utils_format_watt(params['asc_consomation'],params['asc_consomation_choices'])
-    formatted_settings['asc_tmp_min'] = ut.utils_format_time(params['asc_tmp_min'],params['asc_tmp_min_choices'])
     formatted_settings['asc_capa_max'] = ut.utils_format_watt(params['asc_capa_max'],params['asc_capa_max_choices'])
     formatted_settings['asc_capa_actu'] = ut.utils_format_watt(params['asc_capa_actu'],params['asc_capa_actu_choices'])
     formatted_settings['desc_consomation'] = ut.utils_format_watt(params['desc_consomation'],params['desc_consomation_choices'])
@@ -85,7 +84,6 @@ def scrap_contruct_segment_list(formatted_prices,formatted_settings):
 ## Formatage pour influxdb
 def scrap_construct_influxdb_list(optimized_segment_list):
     end = optimized_segment_list['end']
-    end += timedelta(hours=4)
     list_segments = optimized_segment_list['segments']
 
     points = []
@@ -162,7 +160,7 @@ def scrap_calcul_rendement(formatted_settings):
     return round(a/b,2)
 
 def scrap_optimisation(formatted_prices,formatted_settings):
-    optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings)
+    optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings) # OK
 
     if (optimized_segment_list == -1):
         print("Impossible d'optimiser")
@@ -179,23 +177,21 @@ def scrap_optimisation(formatted_prices,formatted_settings):
         point_list = scrap_construct_influxdb_list(optimized_segment_list) # OK
         
         
-        total_duration = scrap_total_duration_operation(point_list)
+        total_duration = scrap_total_duration_operation(point_list) # OK
         mf.manaflux_send_total_duration(total_duration)
-        exit(0)
 
-        mf.manaflux_send_opti(ut.utils_format_point_to_influxdb(point_list))
+        mf.manaflux_send_opti(ut.utils_format_point_to_influxdb(point_list)) # OK
 
 if __name__ == "__main__":
 
-    input_params = {'asc_consomation': '1_270', 'asc_consomation_choices': 4, 
-                    'asc_tmp_min': '1', 'asc_tmp_min_choices': 1, 
-                    'asc_capa_max': '37_000', 'asc_capa_max_choices': 4, 
-                    'asc_capa_actu': '20_000', 'asc_capa_actu_choices': 4, 
-                    'desc_consomation': '1_800', 'desc_consomation_choices': 4, 
-                    'desc_capa_max': '33_000', 'desc_capa_max_choices': 4, 
-                    'desc_capa_actu': '3_000', 'desc_capa_actu_choices': 4, 
-                    'target': '5_000', 'target_choices': 4, 
-                    'titre': 'Titre'}
+    input_params = {'asc_consomation': '1_270', 'asc_consomation_choices': 3, 
+                'asc_capa_max': '37_000', 'asc_capa_max_choices': 3, 
+                'asc_capa_actu': '20_000', 'asc_capa_actu_choices': 3, 
+                'desc_consomation': '1_800', 'desc_consomation_choices': 3, 
+                'desc_capa_max': '33_000', 'desc_capa_max_choices': 3, 
+                'desc_capa_actu': '3_000', 'desc_capa_actu_choices': 3, 
+                'target': '5_000', 'target_choices': 3, 
+                'titre': 'Titre'}
     
     prices = scrap_extract_prices()
     # print(prices)
