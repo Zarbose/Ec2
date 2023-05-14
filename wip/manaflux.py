@@ -7,9 +7,6 @@ org="Ec2"
 bucket="price"
 token="c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ=="
 
-#      c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ==
-
-
 def manaflux_send_daily_price(data):
     client = InfluxDBClient(url=url, token=token, org=org)
     write_api = client.write_api(write_options=SYNCHRONOUS)
@@ -18,8 +15,6 @@ def manaflux_send_daily_price(data):
         write_api.write(bucket=bucket, record=point)
 
 def manaflux_send_opti(data):
-    # for elm in data:
-    #     print(elm)
     client = InfluxDBClient(url=url, token=token, org=org)
     write_api = client.write_api(write_options=SYNCHRONOUS)
     for elm in data:
