@@ -115,7 +115,7 @@
             "type": "influxdb",
             "uid": "P951FEA4DE68E13C5"
           },
-          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"cout-electricite\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"euros\")",
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"cout_electricite\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"euros\")",
           "refId": "A"
         }
       ],
@@ -178,7 +178,7 @@
             "type": "influxdb",
             "uid": "P951FEA4DE68E13C5"
           },
-          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout-electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> mean()",
+          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout_electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> mean()",
           "refId": "A"
         }
       ],
@@ -240,7 +240,7 @@
             "type": "influxdb",
             "uid": "P951FEA4DE68E13C5"
           },
-          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat-otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"rendement\")",
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat_otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"rendement\")",
           "refId": "A"
         }
       ],
@@ -303,7 +303,7 @@
             "type": "influxdb",
             "uid": "P951FEA4DE68E13C5"
           },
-          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout-electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> min()",
+          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout_electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> min()",
           "refId": "A"
         }
       ],
@@ -362,7 +362,7 @@
             "type": "influxdb",
             "uid": "P951FEA4DE68E13C5"
           },
-          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout-electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> max()",
+          "query": "import \"date\"\r\n\r\nfrom(bucket:\"price\")\r\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\r\n|> filter(fn:(r) => r._measurement == \"cout_electricite\")\r\n|> filter(fn:(r) => r.location == \"France\")\r\n|> filter(fn:(r) => r._field == \"euros\")\r\n|> max()",
           "refId": "A"
         }
       ],
@@ -454,7 +454,7 @@
             "uid": "P951FEA4DE68E13C5"
           },
           "hide": false,
-          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat-otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"statut-charge\")",
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat_otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"statut_charge\")",
           "refId": "B"
         }
       ],
@@ -517,7 +517,7 @@
             "type": "influxdb",
             "uid": "P951FEA4DE68E13C5"
           },
-          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat-otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"prix-total\")",
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat_otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"prix_total\")",
           "refId": "A"
         }
       ],
@@ -580,7 +580,7 @@
             "type": "influxdb",
             "uid": "P951FEA4DE68E13C5"
           },
-          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat-otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"duration-total\")",
+          "query": "import \"date\"\n\nfrom(bucket:\"price\")\n|> range(start: today(), stop: date.add(d: 24h, to: today()))\n|> filter(fn:(r) => r._measurement == \"resultat_otpi\")\n|> filter(fn:(r) => r.location == \"France\")\n|> filter(fn:(r) => r._field == \"duration_total\")",
           "refId": "A"
         }
       ],
@@ -604,6 +604,6 @@
   "timezone": "utc",
   "title": "Simulation",
   "uid": "L8CBZeE4z",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
