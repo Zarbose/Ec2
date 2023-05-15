@@ -2,7 +2,6 @@ import scrap.script.requester as rq
 import scrap.script.utils as ut
 import scrap.script.manaflux as mf
 from datetime import timedelta
-import sys, ast
 
 def scrap_initDailyPrice():
     result=[]
