@@ -182,11 +182,34 @@ def scrap_optimisation(formatted_prices,formatted_settings):
 
         mf.manaflux_send_opti(ut.utils_format_point_to_influxdb(point_list)) # OK
 
+def scrap_is_valid(formatted_settings):
+    if formatted_settings['asc_capa_actu'] + formatted_settings['target'] > formatted_settings['asc_capa_max']:
+        a = formatted_settings['asc_capa_actu'] + formatted_settings['target']
+        b = a - formatted_settings['asc_capa_max']
+        c = formatted_settings['desc_capa_actu'] + b
+
+        if c < formatted_settings['desc_capa_max']:
+            time1 = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
+            time2 = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['desc_consomation'])
+            if time1+time2 > 24:
+                return -1
+        else:
+            return -1
+    else:
+        time = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
+        if time > 24:
+            return -1
+    return 0
+
 def scrap_main(input_params):
     prices = scrap_extract_prices()
 
     formatted_prices = scrap_format_prices(prices)
     formatted_settings = scrap_extract_params(input_params)
+
+    if scrap_is_valid(formatted_settings) == -1:
+        print("Invalide parameters")
+        return -1
 
     scrap_optimisation(formatted_prices,formatted_settings)
 

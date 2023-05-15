@@ -67,7 +67,11 @@ def grafana(request,id):
 
     # os.system("python3 /app/script/startup.py")
     os.system("python3 /mnt/c/Users/simon/Documents/Scolaire/MASTER/M1/Cours/Projet_Spe/Ec2/webapp/Ec2/scrap/script/startup.py")
-    sc.scrap_main(sce)
+    status = sc.scrap_main(sce)
+
+    if status == -1:
+        Scenario.objects.get(pk=id).delete()
+        return HttpResponseRedirect("/")
 
     return render(request,"scrap/simulation.html",context)
 
