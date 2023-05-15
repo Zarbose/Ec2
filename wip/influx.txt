@@ -3,7 +3,7 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "cout-electricite")
+|> filter(fn:(r) => r._measurement == "cout_electricite")
 |> filter(fn:(r) => r.location == "France")
 |> filter(fn:(r) => r._field == "euros")
 
@@ -13,7 +13,7 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "cout-electricite")
+|> filter(fn:(r) => r._measurement == "cout_electricite")
 |> filter(fn:(r) => r.location == "France")
 |> filter(fn:(r) => r._field == "euros")
 |> mean()
@@ -24,7 +24,7 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "cout-electricite")
+|> filter(fn:(r) => r._measurement == "cout_electricite")
 |> filter(fn:(r) => r.location == "France")
 |> filter(fn:(r) => r._field == "euros")
 |> min()
@@ -35,7 +35,7 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "cout-electricite")
+|> filter(fn:(r) => r._measurement == "cout_electricite")
 |> filter(fn:(r) => r.location == "France")
 |> filter(fn:(r) => r._field == "euros")
 |> max()
@@ -46,10 +46,9 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "resultat-otpi")
+|> filter(fn:(r) => r._measurement == "resultat_otpi")
 |> filter(fn:(r) => r.location == "France")
-|> filter(fn:(r) => r._field == "statut-charge")
-|> filter(fn:(r) => r._value == 0)
+|> filter(fn:(r) => r._field == "statut_charge")
 
 
 ## Prix total
@@ -57,9 +56,9 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "resultat-otpi")
+|> filter(fn:(r) => r._measurement == "resultat_otpi")
 |> filter(fn:(r) => r.location == "France")
-|> filter(fn:(r) => r._field == "prix-total")
+|> filter(fn:(r) => r._field == "prix_total")
 
 
 ## Durée total
@@ -67,9 +66,9 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "resultat-otpi")
+|> filter(fn:(r) => r._measurement == "resultat_otpi")
 |> filter(fn:(r) => r.location == "France")
-|> filter(fn:(r) => r._field == "duration-total")
+|> filter(fn:(r) => r._field == "duration_total")
 
 
 ## Rendement
@@ -77,6 +76,6 @@ import "date"
 
 from(bucket:"price")
 |> range(start: today(), stop: date.add(d: 24h, to: today()))
-|> filter(fn:(r) => r._measurement == "resultat-otpi")
+|> filter(fn:(r) => r._measurement == "resultat_otpi")
 |> filter(fn:(r) => r.location == "France")
 |> filter(fn:(r) => r._field == "rendement")
