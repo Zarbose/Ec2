@@ -37,7 +37,7 @@ def index(request):
             scenario.target = form.cleaned_data['target']
             scenario.target_choices = form.cleaned_data['target_choices']
             scenario.titre = form.cleaned_data['titre']
-
+            
             scenario.save()
             id = scenario.id
 
