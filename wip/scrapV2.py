@@ -175,8 +175,8 @@ def scrap_optimisation(formatted_prices,formatted_settings):
 
 
         point_list = scrap_construct_influxdb_list(optimized_segment_list) # OK
-        
-        
+
+
         total_duration = scrap_total_duration_operation(point_list) # OK
         mf.manaflux_send_total_duration(total_duration)
 

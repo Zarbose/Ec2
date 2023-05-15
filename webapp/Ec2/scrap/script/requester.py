@@ -10,7 +10,6 @@ def getFRPrice():
     if response.status_code != 200:
         print("Error fetching page error : "+str(response.status_code))
         return -1
-        exit(1)
 
     soup = BeautifulSoup(response.content, 'html.parser')
     listValues = soup.find_all(class_="data-view-detail-link")
