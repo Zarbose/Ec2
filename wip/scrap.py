@@ -1,103 +1,255 @@
 import requester as rq
-import utils as ut
+import utilsV2 as ut
 import manaflux as mf
-from datetime import datetime
 from datetime import timedelta
 
-def initDailyPrice():
+def scrap_initDailyPrice():
     result=[]
     result = rq.getFRPrice() 
-    mf.manaflux_send_daily_price(result)
+    # mf.manaflux_send_daily_price(result)
     return result
 
-def constructSegmentList(ASC_duration_activation):
+def scrap_extract_prices():
+    # prices = scrap_initDailyPrice()
+    prices=mf.manaflux_get_daily_price()
+    prices.sort(key=ut.utils_key_sorted_prices)
 
-    ASC_int_part=int(ASC_duration_activation.getValue())
-    ASC_deci_part=ASC_duration_activation.getValue() % 1
+    return prices
 
-    ### Combien de segments ?
-    nb_elm=0
-    if ASC_deci_part > 0:
-        nb_elm=ASC_int_part+1
+def scrap_format_prices(prices):
+    for elm in prices:
+        elm['time'] = ut.utils_format_infludb_to_datetime(elm['time'])
+        elm['val'] = float(elm['val'])
+    return prices
+
+def scrap_extract_params(params):
+    formatted_settings = {}
+
+    formatted_settings['asc_consomation'] = ut.utils_format_watt(params['asc_consomation'],params['asc_consomation_choices'])
+    formatted_settings['asc_capa_max'] = ut.utils_format_watt(params['asc_capa_max'],params['asc_capa_max_choices'])
+    formatted_settings['asc_capa_actu'] = ut.utils_format_watt(params['asc_capa_actu'],params['asc_capa_actu_choices'])
+    formatted_settings['desc_consomation'] = ut.utils_format_watt(params['desc_consomation'],params['desc_consomation_choices'])
+    formatted_settings['desc_capa_max'] = ut.utils_format_watt(params['desc_capa_max'],params['desc_capa_max_choices'])
+    formatted_settings['desc_capa_actu'] = ut.utils_format_watt(params['desc_capa_actu'],params['desc_capa_actu_choices'])
+    formatted_settings['target'] = ut.utils_format_watt(params['target'],params['target_choices'])
+
+    return formatted_settings
+
+## Simple optimisation
+def scrap_basic_construction_segment_list(formatted_prices,formatted_settings,status):
+    if status == 1:
+        duration = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
     else:
-        nb_elm=ASC_int_part
+        duration = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['desc_consomation'])
+    
+    duration_int=int(duration)
+    duration_deci=duration % 1
 
-    ### Ajout des segments les moins cher
-    list_result=[]
-    for i in range(nb_elm):
-        list_result.append(prices[i])
+    if (duration_int >= 24):
+        return -1
+    # print(duration, duration_int,duration_deci)
 
-    ### Tris par dates
-    list_result.sort(key=ut.getTime)
+    # Construction de la liste des segments ou le pompage va être effectué
+    if duration_deci != 0:
+        nb_segments = duration_int+1
+    else:
+        nb_segments = duration_int
 
-    ### Calcul de la date de fin
-    ASC_total_sec=ASC_duration_activation.getSeconde()
-    ASC_end_sec=3_600-(ASC_total_sec-3_600*ASC_int_part)
+    list_segments = []
+    for i in range(nb_segments):
+        elm = {'time': formatted_prices[i]['time'], 'val': formatted_prices[i]['val']}
+        list_segments.append(elm)
+    
+    # Calcul de la date de fin
+    total_sec=duration*3_600
+    end_sec=3_600-(total_sec-3_600*duration_int)
+    # end_sec=int(end_sec/60)
 
-    end=ut.formatElmDateInfuxToDatetime(list_result[len(list_result)-1])
-    end = ((end[0] + timedelta(hours=1)) - timedelta(seconds=ASC_end_sec), end[1])
-   
-    return {"segments":list_result, "end":ut.formatElmDateDatetimeToInfux(end[0])}
+    end=list_segments[len(list_segments)-1]
+    end = (end['time'] + timedelta(hours=1)) - timedelta(seconds=end_sec)
 
-### Pas finit ==> Faire des testes
-def constructTimePointList(segments_list):
+    list_segments.sort(key=ut.utils_key_sorted_times)
 
-    # segments_list={'segments': [{'time': '2023-04-02T09:00:00Z', 'val': '31.83'}, {'time': '2023-04-02T11:00:00Z', 'val': '17.52'}, {'time': '2023-04-02T17:00:00Z', 'val': '22.24'}, {'time': '2023-04-02T18:00:00Z', 'val': '31.13'}], 'end': '2023-04-02T18:56:13'}
-    ##  13h 15h - 17h 18h56
-    key_point=[]
+    return {"segments":list_segments, "end":end}
 
-    segments=segments_list["segments"]
-    end=segments_list["end"]
+## Choix de l'optimisation a effectuer
+def scrap_contruct_segment_list(formatted_prices,formatted_settings,status):
+    return scrap_basic_construction_segment_list(formatted_prices,formatted_settings,status)
 
-    # print()
-    old_time = segments[0]["time"]
-    format_old_time=ut.formatDateInfuxToDatetime(old_time)
+## Formatage pour influxdb
+def scrap_construct_influxdb_list(optimized_segment_list):
+    end = optimized_segment_list['end']
+    list_segments = optimized_segment_list['segments']
 
-    periode = {"start":old_time,"end":""}
+    points = []
+    old_point_end=list_segments[0]['time'] + timedelta(hours=1)
 
-    # key_point.append(old_time)
-    for elm in segments:
-        cur_time=elm["time"]
-        format_cur_time=ut.formatDateInfuxToDatetime(cur_time)
+    for elm in list_segments:
+        point_to_add =  {'start':elm['time'] ,'end':elm['time'] + timedelta(hours=1)}
 
-        delta = format_cur_time - format_old_time
+        if len(points) == 0:
+            old_point_end=list_segments[0]['time'] + timedelta(hours=1)
+            if elm['time'].hour == end.hour:
+                points.append({'start':list_segments[0]['time'] ,'end':end})
+            else:
+                points.append({'start':list_segments[0]['time'] ,'end':list_segments[0]['time'] + timedelta(hours=1)})
 
-        if (delta.seconds != 0) and (delta.seconds > 3600):
-            periode["end"]=ut.formatDateDatetimeToInfux(format_old_time + timedelta(hours=1))
-            key_point.append(periode)
-            periode = {"start":cur_time,"end":""}
+        elif point_to_add['start'] == old_point_end: # Contigue
+            if elm['time'].hour == end.hour:
+                points[len(points)-1]['end'] = end
+            else:
+                points[len(points)-1]['end'] = point_to_add['end']
+        else: # Non contigue
+            if elm['time'].hour == end.hour:
+                point_to_add['end']=end
+                points.append(point_to_add)
+            else:
+                points.append(point_to_add)
 
-        format_old_time=format_cur_time
+        old_point_end=points[len(points)-1]['end']
 
-    periode["end"]=end
-    key_point.append(periode)
-    # print(key_point)
+    if points[len(points)-1]['end'].hour == end.hour:
+        points[len(points)-1]['end'] = end
 
-    return key_point
+    for elm in points:
+        elm['end']=ut.utils_end_of_day(elm['end'])
 
-def optimization(target_value,ASC_parameters,DESC_parameters,prices):
+    return points
 
-    ASC_duration_activation = ut.getDurationActivation(target,ASC_parameters["energy"])
+## Calcul du cout total de l'opération
+def scrap_total_price_operation(optimized_segment_list, formatted_settings,status):
 
-    segments_list = constructSegmentList(ASC_duration_activation)
+    if status == 1:
+        power = ut.utils_format_watt_to_mega_watt(formatted_settings['asc_consomation'])
+    else:
+        power = ut.utils_format_watt_to_mega_watt(formatted_settings['desc_consomation'])
 
-    time_point = constructTimePointList(segments_list)
+    to_find=optimized_segment_list['end'].hour
+    for elm in optimized_segment_list['segments']:
+        if elm['time'].hour == to_find:
+            elm_end = elm
+            break
 
-    print(time_point)
+    end=elm_end['time']
 
-    # mf.sendOptiTime(segment_list)
+    end = end + timedelta(hours=1)
+    delta = end - optimized_segment_list['end']
+    delta = int(delta.total_seconds()) / 3600
+    total=0
+    for elm in optimized_segment_list['segments']:
+        total = total + power * elm['val']
 
+    total -= (power * delta)*elm_end['val']
+    total = round(total,3) 
+
+    return total
+
+## Calcul de la durée d'activation / désactivation de l'opération
+def scrap_total_duration_operation(point_list):
+    total = 0
+    for elm in point_list:
+        a = elm['start']
+        b = elm['end']
+        delta = b - a
+        delta = int(delta.total_seconds())
+        total += delta
+
+    return round(total/3600,2)
+
+def scrap_calcul_rendement(formatted_settings):
+    a = formatted_settings['asc_consomation']
+    b = formatted_settings['desc_consomation']
+    return round(a/b,2)
+
+def scrap_optimisation(formatted_prices,formatted_settings):
+
+    optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings,1) # OK
+    
+    ## Besoin de turbiner ?
+    a = formatted_settings['asc_capa_actu'] + formatted_settings['target']
+    new_target = a - formatted_settings['asc_capa_max']
+    formatted_settings['target']=new_target
+    reverse = 0
+    if new_target > 0:
+        reverse=1
+    ##
+
+    if reverse == 1: 
+        formatted_prices.reverse()
+        optimized_segment_list_reverse = scrap_contruct_segment_list(formatted_prices,formatted_settings,-1) # OK
+
+    if (optimized_segment_list == -1):
+        print("Impossible d'optimiser")
+    else : 
+        
+        # print(optimized_segment_list)
+        # print(optimized_segment_list_reverse)
+
+
+        total_price = scrap_total_price_operation(optimized_segment_list,formatted_settings,1) # OK
+        if reverse == 1: 
+            total_price += scrap_total_price_operation(optimized_segment_list_reverse,formatted_settings,-1) # OK
+        mf.manaflux_send_total_price(total_price)
+
+    
+        rendement = scrap_calcul_rendement(formatted_settings) # OK
+        mf.manaflux_send_rendement(rendement)
+
+
+        point_list = scrap_construct_influxdb_list(optimized_segment_list) # OK
+        if reverse == 1:
+            point_list_reverse = scrap_construct_influxdb_list(optimized_segment_list_reverse) # OK
+
+
+        total_duration = scrap_total_duration_operation(point_list) # OK
+        if reverse == 1:
+            total_duration += scrap_total_duration_operation(point_list_reverse) # OK
+        mf.manaflux_send_total_duration(total_duration)
+
+        # print()
+        # print(point_list)
+        # print(point_list_reverse)
+
+        hour_list_set=[]
+        simple_point_list = ut.utils_format_point_to_influxdb(point_list,hour_list_set,1)
+        hour_list_set = simple_point_list[1]
+        mf.manaflux_send_opti(simple_point_list[0])
+
+        if reverse == 1:
+            reverse_point_list = ut.utils_format_point_to_influxdb(point_list_reverse,hour_list_set,-1)
+            mf.manaflux_send_opti(reverse_point_list[0])
+
+def scrap_is_valid(formatted_settings):
+    if formatted_settings['asc_capa_actu'] + formatted_settings['target'] > formatted_settings['asc_capa_max']:
+        a = formatted_settings['asc_capa_actu'] + formatted_settings['target']
+        b = a - formatted_settings['asc_capa_max']
+        c = formatted_settings['desc_capa_actu'] + b
+
+        if c < formatted_settings['desc_capa_max']:
+            time1 = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
+            time2 = ut.utils_get_duration_activation(b,formatted_settings['desc_consomation'])
+            if time1+time2 > 24:
+                return -1
+        else:
+            return -1
+    else:
+        time = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
+        if time > 24:
+            return -1
+    return 0
+
+def scrap_main(input_params):
+    prices = scrap_extract_prices()
+
+    formatted_prices = scrap_format_prices(prices)
+    formatted_settings = scrap_extract_params(input_params)
+
+    if scrap_is_valid(formatted_settings) == -1:
+        print("Invalide parameters")
+        return -1
+    
+    mf.manaflux_reset()
+    scrap_optimisation(formatted_prices,formatted_settings)
 
 if __name__ == "__main__":
-    prices = initDailyPrice()
-    # prices=mf.getDailyPrice() ## Une erreur
-
-    prices.sort(key=ut.getVal)
-
-    target={"val":5_000, "unit":"MW"}
-    ASC_parameters={"energy":{"val":1_270, "unit":"MWH"},"min_activation_duration":"1.5h","max":{"val":37_000, "unit": "MW"},"max_actu":{"val":20_000, "unit": "MW"}}
-    DESC_parameters={"energy":{"val":1_800, "unit":"MWH"},"max":{"val":33_000, "unit": "MW"},"max_actu":{"val":3_000, "unit": "MW"}}
-
-    # opt_table = optimization(target,ASC_parameters,DESC_parameters,prices)
-
-    # print(opt_table)
+    print("Cannot used as a script")
