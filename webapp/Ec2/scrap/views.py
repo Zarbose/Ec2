@@ -4,6 +4,7 @@ from scrap.forms import ScenarioForm
 from scrap.models import Scenario
 from scrap.script import scrap as sc
 import os
+from django.shortcuts import redirect
 
 def index(request):
     if request.method == "POST":
@@ -73,6 +74,7 @@ def grafana(request,id):
         Scenario.objects.get(pk=id).delete()
         return HttpResponseRedirect("/")
 
+    return redirect("http://localhost:3000/d/L8CBZeE4z/simulation?orgId=1")
     return render(request,"scrap/simulation.html",context)
 
 def scenario_delete(request, id):

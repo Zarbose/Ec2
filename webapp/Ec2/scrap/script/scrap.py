@@ -238,6 +238,7 @@ def scrap_main(input_params):
         print("Invalide parameters")
         return -1
     
+    mf.manaflux_reset()
     scrap_optimisation(formatted_prices,formatted_settings)
 
 if __name__ == "__main__":
