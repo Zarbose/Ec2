@@ -52,7 +52,6 @@ def index(request):
         "cur_scenario": 0,
         "scenarios": scenarios,
         "scenarios_lenght": scenarios.count()
-        # "scenarios_lenght": 0
     }
 
     return render(request, "scrap/index.html", context)
@@ -75,8 +74,6 @@ def grafana(request,id):
         return HttpResponseRedirect("/")
 
     return redirect("http://localhost:3000/d/L8CBZeE4z/simulation?orgId=1")
-    # return redirect("http://grafana:3000/d/L8CBZeE4z/simulation?orgId=1")
-    return render(request,"scrap/simulation.html",context)
 
 def scenario_delete(request, id):
     scenario = Scenario.objects.get(id=id)

@@ -1,12 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
 
-WATT_CHOICES ={'1': "W",'2': "KW",'3': "MW",'4': "GW",'5': "TW"}
-
-WATTH_CHOICES = {'1': "Wh",'2': "KWh",'3': "MWh",'4': "GWh",'5': "TWh"}
-
-TIME_CHOICES ={'1': "H",'2': "M",'3': "S"}
-
 # Key function to sort list
 def utils_key_sorted_prices(prices):
     return float(prices['val'])
