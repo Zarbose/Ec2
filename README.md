@@ -43,4 +43,4 @@ Le fichier ```.env_python```  permet de configurer l'application web développé
 
 L'utilisation de l'application se fait à partir des urls suivantes :
 - Page de configuration des simulateur <http://localhost:8000/> 
-- Page de visualisation des résultat <http://localhost:3000>
+- Page de visualisation des résultats <http://localhost:3000>
