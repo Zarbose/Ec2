@@ -13,6 +13,7 @@ parcourir les données disponibles puis simuler une STEP et en optimiser son ren
 
 ### Structure du projet
 Le schéma suivant représente comment s'organisent les différents services utilisés par le projet
+
 ![Structure](/image/structure.png)
 
 ### Configuration
