@@ -2,6 +2,7 @@ import requester as rq
 import utilsV2 as ut
 import manaflux as mf
 from datetime import timedelta
+from datetime import datetime
 
 def scrap_initDailyPrice():
     result=[]
@@ -182,10 +183,6 @@ def scrap_optimisation(formatted_prices,formatted_settings):
         print("Impossible d'optimiser")
     else : 
         
-        # print(optimized_segment_list)
-        # print(optimized_segment_list_reverse)
-
-
         total_price = scrap_total_price_operation(optimized_segment_list,formatted_settings,1) # OK
         if reverse == 1: 
             total_price += scrap_total_price_operation(optimized_segment_list_reverse,formatted_settings,-1) # OK
@@ -206,18 +203,88 @@ def scrap_optimisation(formatted_prices,formatted_settings):
             total_duration += scrap_total_duration_operation(point_list_reverse) # OK
         mf.manaflux_send_total_duration(total_duration)
 
-        # print()
-        # print(point_list)
-        # print(point_list_reverse)
+        scrap_send_point_list(reverse,point_list,point_list_reverse)
 
-        hour_list_set=[]
-        simple_point_list = ut.utils_format_point_to_influxdb(point_list,hour_list_set,1)
-        hour_list_set = simple_point_list[1]
-        mf.manaflux_send_opti(simple_point_list[0])
+def scrap_send_point_list(reverse,point_list,point_list_reverse):
 
-        if reverse == 1:
-            reverse_point_list = ut.utils_format_point_to_influxdb(point_list_reverse,hour_list_set,-1)
-            mf.manaflux_send_opti(reverse_point_list[0])
+    time_list_set=[]
+    simple_point_list = ut.utils_format_point_to_influxdb(point_list,time_list_set,1)
+    time_list_set = simple_point_list[1]
+    mf.manaflux_send_opti(simple_point_list[0])
+
+    if reverse == 1:
+        reverse_point_list = ut.utils_format_point_to_influxdb(point_list_reverse,time_list_set,-1)
+        mf.manaflux_send_opti(reverse_point_list[0])
+
+    hour_list_set=[]
+    zero_list=[]
+
+    time_list_set= sorted(time_list_set)
+
+    for elm in time_list_set:
+        hour_list_set.append(elm.hour)
+
+    for i in range(0,24):
+        if i in hour_list_set:
+            continue
+        string = "1900 1 1 "+str(i)+" 0"
+        time = datetime.strptime(string, "%Y %m %d %H %M")
+        zero_list.append({ 'time': ut.utils_format_datetime_to_infuxdb(time), 'val': 0})
+
+    for elm in point_list:
+        start = elm ['start']
+        end = elm ['end']
+
+        to_add=0
+        for rev_elm in point_list_reverse:
+            rev_start=rev_elm['start']
+            rev_end=rev_elm['end']
+            
+            if start - timedelta(seconds=1) == rev_end:
+                to_add = -1 
+
+        if to_add == 0:
+            zero_list.append({ 'time': ut.utils_format_datetime_to_infuxdb(start - timedelta(seconds=1)), 'val': 0})
+        to_add = 0
+
+        for rev_elm in point_list_reverse:
+            rev_start=rev_elm['start']
+            rev_end=rev_elm['end']
+            
+            if end + timedelta(seconds=1) == rev_start:
+                to_add = -1 
+        if to_add == 0:
+            zero_list.append({ 'time': ut.utils_format_datetime_to_infuxdb(end + timedelta(seconds=1)), 'val': 0})
+        to_add = 0
+
+    for elm in point_list_reverse:
+        start = elm ['start']
+        end = elm ['end']
+
+        to_add=0
+        for rev_elm in point_list:
+            rev_start=rev_elm['start']
+            rev_end=rev_elm['end']
+            
+            if start - timedelta(seconds=1) == rev_end:
+                to_add = -1 
+
+        if to_add == 0:
+            zero_list.append({ 'time': ut.utils_format_datetime_to_infuxdb(start - timedelta(seconds=1)), 'val': 0})
+        to_add = 0
+
+        for rev_elm in point_list_reverse:
+            rev_start=rev_elm['start']
+            rev_end=rev_elm['end']
+            
+            if end + timedelta(seconds=1) == rev_start:
+                to_add = -1 
+        if to_add == 0:
+            zero_list.append({ 'time': ut.utils_format_datetime_to_infuxdb(end + timedelta(seconds=1)), 'val': 0})
+        to_add = 0
+
+
+    mf.manaflux_send_opti(zero_list)
 
 def scrap_is_valid(formatted_settings):
     if formatted_settings['asc_capa_actu'] + formatted_settings['target'] > formatted_settings['asc_capa_max']:
@@ -246,11 +313,11 @@ if __name__ == "__main__":
                 'desc_consomation': '1_800', 'desc_consomation_choices': 3, 
                 'desc_capa_max': '33_000', 'desc_capa_max_choices': 3, 
                 'desc_capa_actu': '3_000', 'desc_capa_actu_choices': 3, 
-                'target': '5_000', 'target_choices': 3, 
+                'target': '20_000', 'target_choices': 3, 
                 'titre': 'Titre'}
     
     prices = scrap_extract_prices()
     formatted_prices = scrap_format_prices(prices)
     formatted_settings = scrap_extract_params(input_params)
-    mf.manaflux_reset()
+    # mf.manaflux_reset()
     scrap_optimisation(formatted_prices,formatted_settings)

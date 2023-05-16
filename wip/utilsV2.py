@@ -67,39 +67,35 @@ def utils_format_datetime_to_infuxdb(elm):
     string=str(curent_day)+"T"+str(elm.time())+"Z"
     return string
 
-def utils_format_point_to_influxdb(point_list,hour_list_set,val):
+def utils_format_point_to_influxdb(point_list,time_list_set,val):
     formated_list=[]
 
-    if (len(hour_list_set) == 0):
-        hour_list_set=[]
+    if (len(time_list_set) == 0):
+        time_list_set=[]
 
     for elm in point_list:
         start = elm['start']
         end = elm['end']
 
-        # print(start,end)
-
         while start <= end:
-            formated_list.append({ 'time': utils_format_datetime_to_infuxdb(start), 'val': val})
-            hour_list_set.append(start.hour)
+            if start in time_list_set and val == -1:
+                formated_list.append({ 'time': utils_format_datetime_to_infuxdb(start + timedelta(seconds=1)), 'val': val})
+                elm['start']=start + timedelta(seconds=1)
+                time_list_set.append(start + timedelta(seconds=1))
+            else:
+                formated_list.append({ 'time': utils_format_datetime_to_infuxdb(start), 'val': val})
+                time_list_set.append(start)
+            
             start += timedelta(hours=1)
         
         if end != start:
-            formated_list.append({ 'time': utils_format_datetime_to_infuxdb(end), 'val': val})
-
-    for i in range(0,24):
-        if i in hour_list_set:
-            continue
-        string = "1900 1 1 "+str(i)+" 0"
-        time = datetime.strptime(string, "%Y %m %d %H %M")
-        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(time), 'val': 0})
-
-    for elm in point_list:
-        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(elm['start'] - timedelta(seconds=1)), 'val': 0})
-        formated_list.append({ 'time': utils_format_datetime_to_infuxdb(elm['end'] + timedelta(seconds=1)), 'val': 0})
+            if start in time_list_set and val == -1:
+                formated_list.append({ 'time': utils_format_datetime_to_infuxdb(end + timedelta(seconds=1)), 'val': val})
+            else:
+                formated_list.append({ 'time': utils_format_datetime_to_infuxdb(end), 'val': val})
 
     formated_list.sort(key=utils_key_sorted_influxdb)
-    return (formated_list,hour_list_set)
+    return (formated_list,time_list_set)
 
 def utils_get_duration_activation(target,energy):
     a = energy # Watt/h
