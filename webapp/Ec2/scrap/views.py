@@ -66,7 +66,6 @@ def grafana(request,id):
     sce=sce.__repr__()
 
     os.system("python3 /app/script/startup.py")
-    # os.system("python3 /mnt/c/Users/simon/Documents/Scolaire/MASTER/M1/Cours/Projet_Spe/Ec2/webapp/Ec2/scrap/script/startup.py")
     status = sc.scrap_main(sce)
 
     if status == -1:

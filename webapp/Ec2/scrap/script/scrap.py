@@ -28,7 +28,6 @@ def scrap_extract_params(params):
 
     return formatted_settings
 
-## Simple optimisation
 def scrap_basic_construction_segment_list(formatted_prices,formatted_settings,status):
     if status == 1:
         duration = ut.utils_get_duration_activation(formatted_settings['target'],formatted_settings['asc_consomation'])
@@ -40,9 +39,7 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings,st
 
     if (duration_int >= 24):
         return -1
-    # print(duration, duration_int,duration_deci)
 
-    # Construction de la liste des segments ou le pompage va être effectué
     if duration_deci != 0:
         nb_segments = duration_int+1
     else:
@@ -53,10 +50,8 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings,st
         elm = {'time': formatted_prices[i]['time'], 'val': formatted_prices[i]['val']}
         list_segments.append(elm)
     
-    # Calcul de la date de fin
     total_sec=duration*3_600
     end_sec=3_600-(total_sec-3_600*duration_int)
-    # end_sec=int(end_sec/60)
 
     end=list_segments[len(list_segments)-1]
     end = (end['time'] + timedelta(hours=1)) - timedelta(seconds=end_sec)
@@ -65,11 +60,9 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings,st
 
     return {"segments":list_segments, "end":end}
 
-## Choix de l'optimisation a effectuer
 def scrap_contruct_segment_list(formatted_prices,formatted_settings,status):
     return scrap_basic_construction_segment_list(formatted_prices,formatted_settings,status)
 
-## Formatage pour influxdb
 def scrap_construct_influxdb_list(optimized_segment_list):
     end = optimized_segment_list['end']
     list_segments = optimized_segment_list['segments']
@@ -109,7 +102,6 @@ def scrap_construct_influxdb_list(optimized_segment_list):
 
     return points
 
-## Calcul du cout total de l'opération
 def scrap_total_price_operation(optimized_segment_list, formatted_settings,status):
 
     if status == 1:
@@ -137,7 +129,6 @@ def scrap_total_price_operation(optimized_segment_list, formatted_settings,statu
 
     return total
 
-## Calcul de la durée d'activation / désactivation de l'opération
 def scrap_total_duration_operation(point_list):
     total = 0
     for elm in point_list:
@@ -158,14 +149,12 @@ def scrap_optimisation(formatted_prices,formatted_settings):
 
     optimized_segment_list = scrap_contruct_segment_list(formatted_prices,formatted_settings,1) # OK
     
-    ## Besoin de turbiner ?
     a = formatted_settings['asc_capa_actu'] + formatted_settings['target']
     new_target = a - formatted_settings['asc_capa_max']
     formatted_settings['target']=new_target
     reverse = 0
     if new_target > 0:
         reverse=1
-    ##
 
     if reverse == 1: 
         formatted_prices.reverse()

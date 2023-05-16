@@ -1,7 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
 
-# Key function to sort list
 def utils_key_sorted_prices(prices):
     return float(prices['val'])
 
@@ -46,7 +45,6 @@ def utils_end_of_day(value):
         return (value) - timedelta(seconds=1)
     return value 
 
-# 2023-05-07T14:00:00Z ==> datetime(14:00:00)
 def utils_format_infludb_to_datetime(elm):
     date=elm
     date=date.split('T')
@@ -96,7 +94,6 @@ def utils_get_duration_activation(target,energy):
     b = target # Watt
     return b/a
 
-# Print functions
 def utils_print_prices(prices):
     for elm in prices:
         print(elm['time'],elm['val'])
