@@ -3,6 +3,7 @@ import utilsV2 as ut
 import manaflux as mf
 from datetime import timedelta
 from datetime import datetime
+import os
 
 def scrap_initDailyPrice():
     result=[]
@@ -314,11 +315,11 @@ if __name__ == "__main__":
                 'desc_consomation': '1_800', 'desc_consomation_choices': 3, 
                 'desc_capa_max': '33_000', 'desc_capa_max_choices': 3, 
                 'desc_capa_actu': '3_000', 'desc_capa_actu_choices': 3, 
-                'target': '5_000', 'target_choices': 3, 
+                'target': '20_000', 'target_choices': 3, 
                 'titre': 'Titre'}
     
-    # prices = scrap_extract_prices()
-    # formatted_prices = scrap_format_prices(prices)
-    # formatted_settings = scrap_extract_params(input_params)
-    # mf.manaflux_reset()
-    # scrap_optimisation(formatted_prices,formatted_settings)
+    prices = scrap_extract_prices()
+    formatted_prices = scrap_format_prices(prices)
+    formatted_settings = scrap_extract_params(input_params)
+    mf.manaflux_reset()
+    scrap_optimisation(formatted_prices,formatted_settings)
