@@ -186,6 +186,7 @@ def scrap_optimisation(formatted_prices,formatted_settings):
 
 
         point_list = scrap_construct_influxdb_list(optimized_segment_list) # OK
+        point_list_reverse=[]
         if reverse == 1:
             point_list_reverse = scrap_construct_influxdb_list(optimized_segment_list_reverse) # OK
 

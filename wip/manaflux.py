@@ -49,23 +49,22 @@ def manaflux_send_rendement(data):
     write_api.write(bucket=bucket, record=point)
 
 def manaflux_reset():
-    client = InfluxDBClient(url=url, token=token, org=org)
-    query_api = client.query_api()
-    write_api = client.write_api(write_options=SYNCHRONOUS)
+    client = InfluxDBClient(url=url, token=token)
 
-    query = 'import "date"\
-    from(bucket:"price")\
-    |> range(start: today(), stop: date.add(d: 24h, to: today()))\
-    |> filter(fn:(r) => r._measurement == "resultat_otpi")\
-    |> filter(fn:(r) => r.location == "France")\
-    |> filter(fn:(r) => r._field == "statut_charge")'\
+    delete_api = client.delete_api()
 
-    result = query_api.query(org=org, query=query)
+    """
+    Delete Data
+    """
+    start = "2021-01-01T00:00:00Z"
+    stop = "2024-02-01T00:00:00Z"
+    tmp = delete_api.delete(start, stop, '_measurement=resultat_otpi', bucket=bucket, org=org)
 
-    for table in result:
-        for record in table.records:
-            point = Point("resultat_otpi").tag("location", "France").field("statut_charge", float(0)).time(record.get_time(), WritePrecision.NS)
-            write_api.write(bucket=bucket, record=point)
+    print(tmp)
+    """
+    Close client
+    """
+    client.close()
 
 def manaflux_get_daily_price():
     client = InfluxDBClient(url=url, token=token, org=org)
