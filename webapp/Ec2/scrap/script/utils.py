@@ -38,7 +38,7 @@ def utils_format_time(elm,unit):
         return elm
     
 def utils_format_watt_to_mega_watt(elm):
-    return elm/1_000_000_000
+    return elm/1_000_000
 
 def utils_end_of_day(value):
     value_day = int(value.strftime('%d'))
