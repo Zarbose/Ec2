@@ -58,9 +58,8 @@ def manaflux_reset():
     """
     start = "2021-01-01T00:00:00Z"
     stop = "2024-02-01T00:00:00Z"
-    tmp = delete_api.delete(start, stop, '_measurement=resultat_otpi', bucket=bucket, org=org)
+    delete_api.delete(start, stop, '_measurement=resultat_otpi', bucket=bucket, org=org)
 
-    print(tmp)
     """
     Close client
     """
