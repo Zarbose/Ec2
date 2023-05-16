@@ -11,6 +11,9 @@ parcourir les données disponibles puis simuler une STEP et en optimiser son ren
 - Docker engine
 - Docker compose
 
+### Structure du projet
+![Structure](/image/structure.png)
+
 ### Configuration
 Dans le repertoire [secrets](https://github.com/Zarbose/Ec2/tree/main/secrets) vous trouverez trois fichier qui von permetre de configurer les différent service utiliser :
 - **.env_gf**
