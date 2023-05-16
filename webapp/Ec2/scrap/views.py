@@ -66,8 +66,8 @@ def grafana(request,id):
     sce = Scenario.objects.get(pk=id)
     sce=sce.__repr__()
 
-    # os.system("python3 /app/script/startup.py")
-    os.system("python3 /mnt/c/Users/simon/Documents/Scolaire/MASTER/M1/Cours/Projet_Spe/Ec2/webapp/Ec2/scrap/script/startup.py")
+    os.system("python3 /app/script/startup.py")
+    # os.system("python3 /mnt/c/Users/simon/Documents/Scolaire/MASTER/M1/Cours/Projet_Spe/Ec2/webapp/Ec2/scrap/script/startup.py")
     status = sc.scrap_main(sce)
 
     if status == -1:
@@ -75,6 +75,7 @@ def grafana(request,id):
         return HttpResponseRedirect("/")
 
     return redirect("http://localhost:3000/d/L8CBZeE4z/simulation?orgId=1")
+    # return redirect("http://grafana:3000/d/L8CBZeE4z/simulation?orgId=1")
     return render(request,"scrap/simulation.html",context)
 
 def scenario_delete(request, id):

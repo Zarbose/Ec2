@@ -1,13 +1,6 @@
-import scrap.script.requester as rq
 import scrap.script.utils as ut
 import scrap.script.manaflux as mf
 from datetime import timedelta
-
-def scrap_initDailyPrice():
-    result=[]
-    result = rq.getFRPrice() 
-    # mf.manaflux_send_daily_price(result)
-    return result
 
 def scrap_extract_prices():
     prices=mf.manaflux_get_daily_price()
@@ -46,6 +39,7 @@ def scrap_basic_construction_segment_list(formatted_prices,formatted_settings,st
 
     if (duration_int >= 24):
         return -1
+    # print(duration, duration_int,duration_deci)
 
     # Construction de la liste des segments ou le pompage va être effectué
     if duration_deci != 0:
@@ -180,6 +174,10 @@ def scrap_optimisation(formatted_prices,formatted_settings):
         print("Impossible d'optimiser")
     else : 
         
+        # print(optimized_segment_list)
+        # print(optimized_segment_list_reverse)
+
+
         total_price = scrap_total_price_operation(optimized_segment_list,formatted_settings,1) # OK
         if reverse == 1: 
             total_price += scrap_total_price_operation(optimized_segment_list_reverse,formatted_settings,-1) # OK
@@ -199,6 +197,10 @@ def scrap_optimisation(formatted_prices,formatted_settings):
         if reverse == 1:
             total_duration += scrap_total_duration_operation(point_list_reverse) # OK
         mf.manaflux_send_total_duration(total_duration)
+
+        # print()
+        # print(point_list)
+        # print(point_list_reverse)
 
         hour_list_set=[]
         simple_point_list = ut.utils_format_point_to_influxdb(point_list,hour_list_set,1)
