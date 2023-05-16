@@ -7,15 +7,16 @@ Toutes les données sont accessibles en open-data, par HTTP sans avoir à lancer
 parcourir les données disponibles puis simuler une STEP et en optimiser son rendement. Mots-clefs : temps-réel, opendata, bourse.
 
 
-#### Prérequis avant instalation
+#### Pré Requis avant installation
 - Docker engine
 - Docker compose
 
 ### Structure du projet
+Le schéma suivant représente comment s'organisent les différents services utilisés par le projet
 ![Structure](/image/structure.png)
 
 ### Configuration
-Dans le repertoire [secrets](https://github.com/Zarbose/Ec2/tree/main/secrets) vous trouverez trois fichier qui von permetre de configurer les différent service utiliser :
+Dans le répertoire [secrets](https://github.com/Zarbose/Ec2/tree/main/secrets) vous trouverez 3 fichiers qui vont permettre de configurer les différents services à utiliser. :
 - **.env_gf**
 - **.env_influxdb**
 - **.env_python**
@@ -31,13 +32,13 @@ DOCKER_INFLUXDB_INIT_USERNAME=...       # Login
 DOCKER_INFLUXDB_INIT_PASSWORD=...       # Password
 ```
 
-Le fichier ```.env_python```  permet de configurer l'application web déveuloper a l'aide du framework Django. Par defaut il n'y a rien a modifier
+Le fichier ```.env_python```  permet de configurer l'application web développée à l'aide du framework Django. Par défaut, il n'y a rien à modifier.
 
-### Démarer l'application
+### Démarrer l'application
 ```bash
     docker compose up
 ```
 
-L'utilisation de l'application se fait a partir des urls suivant :
+L'utilisation de l'application se fait à partir des urls suivantes :
 - Page de configuration des simulateur <http://localhost:8000/> 
 - Page de visualisation des résultat <http://localhost:3000>
