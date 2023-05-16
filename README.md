@@ -6,11 +6,12 @@ L'application RTE-Eco2Mix permet de comprendre les productions et les consommati
 Toutes les données sont accessibles en open-data, par HTTP sans avoir à lancer l'application. Le projet consiste à
 parcourir les données disponibles puis simuler une STEP et en optimiser son rendement. Mots-clefs : temps-réel, opendata, bourse.
 
-
 #### Pré Requis avant installation
 - Docker engine
 - Docker compose
+
 Documentation Docker : <https://docs.docker.com/> 
+
 ### Structure du projet
 Le schéma suivant représente comment s'organisent les différents services utilisés par le projet
 
