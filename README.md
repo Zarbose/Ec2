@@ -17,7 +17,7 @@ Documentation Docker : <https://docs.docker.com/>
 ### Structure du projet
 Le schéma suivant représente comment s'organisent les différents services utilisés par le projet
 
-![Structure](/image/structure.png)
+![Structure](/documents/structure.png)
 
 ### Configuration
 Dans le répertoire [secrets](https://github.com/Zarbose/Ec2/tree/main/secrets) vous trouverez 3 fichiers qui vont permettre de configurer les différents services à utiliser. :
