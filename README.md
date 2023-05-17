@@ -19,6 +19,8 @@ Le schéma suivant représente comment s'organisent les différents services uti
 
 ![Structure](/documents/structure.png)
 
+Le conteneur python contient une application web Django qui permet à l'utilisateur de configurer le simulateur. Le conteneur InfluxDB permet de faire le lien entre les résultats calculés et l'affichage à l'aide de grafana.
+
 ### Configuration
 Dans le répertoire [secrets](https://github.com/Zarbose/Ec2/tree/main/secrets) vous trouverez 3 fichiers qui vont permettre de configurer les différents services à utiliser. :
 - **.env_gf**
