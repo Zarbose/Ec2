@@ -46,5 +46,3 @@ jobs:
           file: ./grafana.Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/ec2-grafana:latest
-
-      
