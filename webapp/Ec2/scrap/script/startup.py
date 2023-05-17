@@ -1,5 +1,5 @@
-import requester as rq
-import manaflux as mf
+from scrap.script import requester as rq
+from scrap.script import manaflux as mf
 
 def initDailyPrice():
     result=[]
