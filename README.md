@@ -29,13 +29,13 @@ Dans le répertoire [secrets](https://github.com/Zarbose/Ec2/tree/main/secrets) 
 
 Le fichier ```.env_gf```  permet de configurer grafana
 ```
-GF_SECURITY_ADMIN_USER=...          # Login
-GF_SECURITY_ADMIN_PASSWORD=...      # Password
+GF_SECURITY_ADMIN_USER=<YOUR_CUSTOM_LOGIN>             # Login
+GF_SECURITY_ADMIN_PASSWORD=<YOUR_CUSTOM_PASSWORD>      # Password
 ```
 Le fichier ```.env_influxdb```  permet de configurer influxdb
 ```
-DOCKER_INFLUXDB_INIT_USERNAME=...       # Login     
-DOCKER_INFLUXDB_INIT_PASSWORD=...       # Password
+DOCKER_INFLUXDB_INIT_USERNAME=<YOUR_CUSTOM_LOGIN>       # Login     
+DOCKER_INFLUXDB_INIT_PASSWORD=<YOUR_CUSTOM_PASSWORD>    # Password
 ```
 
 Le fichier ```.env_python```  permet de configurer l'application web développée à l'aide du framework Django. Par défaut, il n'y a rien à modifier.
