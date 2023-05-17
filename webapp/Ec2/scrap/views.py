@@ -75,8 +75,6 @@ def grafana(request,id):
 
     return HttpResponseRedirect("/")
 
-    return redirect("http://localhost:3000/d/L8CBZeE4z/simulation?orgId=1")
-
 def scenario_delete(request, id):
     scenario = Scenario.objects.get(id=id)
     scenario.delete()
