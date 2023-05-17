@@ -6,8 +6,9 @@ services:
       dockerfile: python.Dockerfile
     image: zarbose/ec2-python
     container_name: python
-    env_file:
-      - secrets/.env_python
+    environment:
+      - SECRET_KEY=django-insecure-sk=@gdj#ldi&pyc7mj1bgfyzciyr)7phny7cnf!en8+0%rh!)r
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ==
     ports:
       - "8000:8000"
     networks:
@@ -21,8 +22,10 @@ services:
       dockerfile: influxdb.Dockerfile
     image: zarbose/ec2-influxdb
     container_name: influxdb
-    env_file:
-      - secrets/.env_influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ==
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=12345678
     ports:
       - "8086:8086"
     networks:
@@ -35,8 +38,9 @@ services:
       dockerfile: grafana.Dockerfile
     image: zarbose/ec2-grafana
     container_name: grafana
-    env_file:
-      - secrets/.env_gf
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=12345678 
     ports:
       - "3000:3000"
     networks:
