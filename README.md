@@ -1,5 +1,5 @@
 # Ec2
-https://github.com/Zarbose/Ec2/actions/workflows/docker.yml/badge.svg
+![Pipeline](https://github.com/Zarbose/Ec2/actions/workflows/docker.yml/badge.svg)
 Projet de spécialité en Master 1 Informatique par Simon Pieto
 
 ### Sujet
