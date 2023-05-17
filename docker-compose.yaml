@@ -4,7 +4,7 @@ services:
     build:
       context: ./
       dockerfile: python.Dockerfile
-    image: ec2-python
+    image: zarbose/ec2-python
     container_name: python
     env_file:
       - secrets/.env_python
@@ -19,7 +19,7 @@ services:
     build:
       context: ./
       dockerfile: influxdb.Dockerfile
-    image: ec2-influxdb
+    image: zarbose/ec2-influxdb
     container_name: influxdb
     env_file:
       - secrets/.env_influxdb
@@ -33,7 +33,7 @@ services:
     build:
       context: ./
       dockerfile: grafana.Dockerfile
-    image: ec2-grafana
+    image: zarbose/ec2-grafana
     container_name: grafana
     env_file:
       - secrets/.env_gf

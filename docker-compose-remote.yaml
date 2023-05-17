@@ -34,8 +34,6 @@ services:
       - grafana
     depends_on:
       - influxdb
-    volumes:
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
 
 networks:
   python:
