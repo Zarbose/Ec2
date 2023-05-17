@@ -1,9 +1,6 @@
 version: "3.9"
 services:
   python:
-    build:
-      context: ./
-      dockerfile: python.Dockerfile
     image: zarbose/ec2-python
     container_name: python
     env_file:
@@ -16,9 +13,6 @@ services:
       - influxdb
 
   influxdb:
-    build:
-      context: ./
-      dockerfile: influxdb.Dockerfile
     image: zarbose/ec2-influxdb
     container_name: influxdb
     env_file:
@@ -30,9 +24,6 @@ services:
       - grafana
 
   grafana:
-    build:
-      context: ./
-      dockerfile: grafana.Dockerfile
     image: zarbose/ec2-grafana
     container_name: grafana
     env_file:
