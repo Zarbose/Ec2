@@ -5,6 +5,5 @@ from scrap.views import scenario_delete
 
 urlpatterns = [
     path('', index, name="scrap-index"),
-    path('grafana/<int:id>/', grafana, name="scrap-grafana"),
     path('scenario_delete/<int:id>/', scenario_delete, name="scrap-delete"),
 ]

@@ -6,6 +6,7 @@ def initDailyPrice():
     result = rq.getFRPrice() 
     if result == -1:
         print("Site web indisponible")
+        return -1
     else:
         mf.manaflux_send_daily_price(result)
 

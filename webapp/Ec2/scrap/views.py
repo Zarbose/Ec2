@@ -5,6 +5,7 @@ from scrap.models import Scenario
 from scrap.script import scrap as sc
 import os
 from django.shortcuts import redirect
+from scrap.script import startup as st
 
 def index(request):
     if request.method == "POST":
@@ -65,10 +66,10 @@ def grafana(request,id):
     sce = Scenario.objects.get(pk=id)
     sce=sce.__repr__()
 
-    os.system("python3 /app/script/startup.py")
-    status = sc.scrap_main(sce)
+    status_web = st.initDailyPrice()
+    status_sim = sc.scrap_main(sce)
 
-    if status == -1:
+    if status_web or status_sim == -1:
         Scenario.objects.get(pk=id).delete()
         return HttpResponseRedirect("/")
 
