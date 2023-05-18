@@ -40,9 +40,10 @@ def index(request):
             scenario.target_choices = form.cleaned_data['target_choices']
             scenario.titre = form.cleaned_data['titre']
             
+            # print("AV SAVE")
             scenario.save()
             id = scenario.id
-
+            # print("AP SAVE")
             return HttpResponseRedirect("/grafana/"+str(id))
     else:
         form = ScenarioForm()
@@ -58,6 +59,7 @@ def index(request):
     return render(request, "scrap/index.html", context)
 
 def grafana(request,id):
+    # print("GRAFANA")
     scenarios = Scenario.objects.all()
     context = {
         "id": id,
@@ -67,7 +69,9 @@ def grafana(request,id):
     sce=sce.__repr__()
 
     status_web = st.initDailyPrice()
+    # print("WEB -------------- :",status_web)
     status_sim = sc.scrap_main(sce)
+    # print("SIM -------------- :",status_sim)
 
     if status_web or status_sim == -1:
         Scenario.objects.get(pk=id).delete()

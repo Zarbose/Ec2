@@ -143,7 +143,12 @@ def scrap_total_duration_operation(point_list):
 def scrap_calcul_rendement(formatted_settings):
     a = formatted_settings['asc_consomation']
     b = formatted_settings['desc_consomation']
-    return round(a/b,2)
+
+    # return round(b/a,2)
+    if a > b:
+        return round(b/a,2)
+    else:
+        return round(a/b,2)
 
 def scrap_optimisation(formatted_prices,formatted_settings):
 
