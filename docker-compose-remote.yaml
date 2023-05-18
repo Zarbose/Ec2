@@ -11,6 +11,8 @@ services:
       - python
     depends_on:
       - influxdb
+    volumes:
+      - ./webapp/Ec2/db.sqlite3:/app/webapp/Ec2/db.sqlite3
 
   influxdb:
     image: zarbose/ec2-influxdb

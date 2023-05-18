@@ -3,13 +3,11 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 from datetime import datetime
 import os
 
-# url="http://influxdb:8086"
-url="http://localhost:8086"
+url="http://influxdb:8086"
 org="Ec2"
 bucket="price"
 
-# token = os.environ['DOCKER_INFLUXDB_INIT_ADMIN_TOKEN']
-token="c5gyOEb7KSRLIoFuFrFDMUo9UDgmAlSMty9GJJZEMN3X5qfn6mkgVRCSxXottjfG8BZduRNOLivEql4FCngFjQ=="
+token = os.environ['DOCKER_INFLUXDB_INIT_ADMIN_TOKEN']
 
 def manaflux_send_daily_price(data):
     client = InfluxDBClient(url=url, token=token, org=org)
